@@ -1,7 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c890b75-26df-4b07-9a0f-448bd05382be" name="Default Changelist" comment="" />
+    <list default="true" id="6c890b75-26df-4b07-9a0f-448bd05382be" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.htaccess" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/authorization/index.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/index.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/helpers/pageHelper.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/footer.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/header.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/add.php" beforeDir="false" afterPath="$PROJECT_DIR$/add.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/authorization.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery.php" beforeDir="false" afterPath="$PROJECT_DIR$/delivery.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/orders.php" beforeDir="false" afterPath="$PROJECT_DIR$/orders.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/products.php" beforeDir="false" afterPath="$PROJECT_DIR$/products.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,7 +44,11 @@
   <component name="ComposerSettings">
     <execution />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1kkPhsF2GDp39VY7QRpiIxx56oq" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -18,7 +56,14 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Установщики программок\Open Server Panel\OpenServer\domains\onlineStore\authorization" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -28,11 +73,49 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1606241739703</updated>
-      <workItem from="1606241741098" duration="1456000" />
+      <workItem from="1606241741098" duration="1969000" />
+      <workItem from="1606244113559" duration="607000" />
+      <workItem from="1606323295243" duration="10193000" />
+      <workItem from="1606406689279" duration="157000" />
+      <workItem from="1606406933213" duration="578000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="794" y="-692" width="359" height="153" key="NewPhpFileDialog" timestamp="1606332455215">
+      <screen x="0" y="-1200" width="1920" height="1170" />
+    </state>
+    <state x="794" y="-692" width="359" height="153" key="NewPhpFileDialog/0.0.1280.689/0.-1200.1920.1170@0.-1200.1920.1170" timestamp="1606332455214" />
+    <state x="211" y="-906" key="SettingsEditor" timestamp="1606329900262">
+      <screen x="0" y="-1200" width="1920" height="1170" />
+    </state>
+    <state x="211" y="-906" key="SettingsEditor/0.0.1280.689/0.-1200.1920.1170@0.-1200.1920.1170" timestamp="1606329900262" />
   </component>
 </project>
