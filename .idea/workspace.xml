@@ -16,25 +16,34 @@
         <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </expand>
-    <select />
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6c890b75-26df-4b07-9a0f-448bd05382be" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.htaccess" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/authorization/index.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/index.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/helpers/pageHelper.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/footer.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/header.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/.htaccess" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/index.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/route/index.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/headerMenuAdmin.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/headerMenuUser.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/menu.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/.htaccess" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/add.php" beforeDir="false" afterPath="$PROJECT_DIR$/add.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authorization.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery.php" beforeDir="false" afterPath="$PROJECT_DIR$/delivery.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/add.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/add.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/authorization/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/route/authorization.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery.php" beforeDir="false" afterPath="$PROJECT_DIR$/route/delivery.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helpers/pageHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/pageHelper.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/orders.php" beforeDir="false" afterPath="$PROJECT_DIR$/orders.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/products.php" beforeDir="false" afterPath="$PROJECT_DIR$/products.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/orders.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/orders.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/products.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/products.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/footer.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/footer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,12 +65,21 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/admin" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="Errors" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Установщики программок\Open Server Panel\OpenServer\domains\onlineStore\admin" />
+      <recent name="C:\Установщики программок\Open Server Panel\OpenServer\domains\onlineStore\admin\add" />
+      <recent name="C:\Установщики программок\Open Server Panel\OpenServer\domains\onlineStore\route" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Установщики программок\Open Server Panel\OpenServer\domains\onlineStore\route" />
+      <recent name="C:\Установщики программок\Open Server Panel\OpenServer\domains\onlineStore\admin" />
+      <recent name="C:\Установщики программок\Open Server Panel\OpenServer\domains\onlineStore\admin\add" />
       <recent name="C:\Установщики программок\Open Server Panel\OpenServer\domains\onlineStore\authorization" />
     </key>
   </component>
@@ -77,7 +95,10 @@
       <workItem from="1606244113559" duration="607000" />
       <workItem from="1606323295243" duration="10193000" />
       <workItem from="1606406689279" duration="157000" />
-      <workItem from="1606406933213" duration="578000" />
+      <workItem from="1606406933213" duration="12218000" />
+      <workItem from="1606491310266" duration="12479000" />
+      <workItem from="1606504133894" duration="5284000" />
+      <workItem from="1606559164308" duration="7671000" />
     </task>
     <servers />
   </component>
@@ -89,19 +110,7 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="origin/master" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
+            <State />
           </value>
         </entry>
       </map>
@@ -109,10 +118,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="794" y="-692" width="359" height="153" key="NewPhpFileDialog" timestamp="1606332455215">
+    <state x="794" y="-692" width="359" height="153" key="NewPhpFileDialog" timestamp="1606564773123">
       <screen x="0" y="-1200" width="1920" height="1170" />
     </state>
-    <state x="794" y="-692" width="359" height="153" key="NewPhpFileDialog/0.0.1280.689/0.-1200.1920.1170@0.-1200.1920.1170" timestamp="1606332455214" />
+    <state x="794" y="-692" width="359" height="153" key="NewPhpFileDialog/0.0.1280.689/0.-1200.1920.1170@0.-1200.1920.1170" timestamp="1606564773123" />
     <state x="211" y="-906" key="SettingsEditor" timestamp="1606329900262">
       <screen x="0" y="-1200" width="1920" height="1170" />
     </state>

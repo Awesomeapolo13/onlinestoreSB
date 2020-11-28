@@ -1,11 +1,3 @@
-<?php
-
-//Файл с функциями отображения контента
-include $_SERVER['DOCUMENT_ROOT'] . '/helpers/pageHelper.php';
-//Файл с переменными для конфигурации контента на странице
-include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
-
-?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -17,7 +9,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
 
     <meta name="theme-color" content="#393939">
     <?php if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) == '/'): ?>
-        <link rel="preload" href="img/intro/coats-2018.jpg" as="image">
+        <link rel="preload" href="/img/intro/coats-2018.jpg" as="image">
     <?php endif; ?>
     <link rel="preload" href="/fonts/opensans-400-normal.woff2" as="font">
     <link rel="preload" href="/fonts/roboto-400-normal.woff2" as="font">

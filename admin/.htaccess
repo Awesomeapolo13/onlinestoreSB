@@ -4,7 +4,7 @@ RewriteEngine On
 php_value error_reporting -1
 php_value display_errors on
 
-RewriteBase /
+RewriteBase /admin/
 #Don't favicon!
 RewriteCond %{REQUEST_FILENAME} !^favicon\.ico
 
