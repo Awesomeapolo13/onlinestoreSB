@@ -24,3 +24,17 @@
     <script src="/js/scripts.js" defer=""></script>
 </head>
 <body>
+<header class="page-header">
+    <a class="page-header__logo" href="/">
+        <img src="/img/logo.svg" alt="Fashion">
+    </a>
+    <nav class="page-header__menu">
+        <?php
+        if (isset($_SESSION['isLoggedIn'])):
+            pageHelper\showMenu($menuArray, $_SESSION['isLoggedIn'], 'header');
+        else:
+            pageHelper\showMenu($menuArray, null, 'header');
+        endif;
+        ?>
+    </nav>
+</header>

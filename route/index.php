@@ -1,6 +1,7 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
-include $_SERVER['DOCUMENT_ROOT'] . '/templates/headerMenuUser.php'
+
+
 ?>
 <main class="shop-page">
     <header class="intro">

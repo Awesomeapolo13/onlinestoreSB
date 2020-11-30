@@ -1,6 +1,5 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
-include $_SERVER['DOCUMENT_ROOT'] . '/templates/headerMenuUser.php'
 ?>
 <main class="page-delivery">
     <h1 class="h h--1">Доставка</h1>

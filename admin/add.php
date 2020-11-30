@@ -1,6 +1,5 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
-include $_SERVER['DOCUMENT_ROOT'] . '/templates/headerMenuAdmin.php'
 ?>
 <main class="page-add">
     <h1 class="h h--1">Добавление товара</h1>

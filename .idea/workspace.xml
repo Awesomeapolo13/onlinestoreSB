@@ -26,24 +26,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6c890b75-26df-4b07-9a0f-448bd05382be" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/admin/.htaccess" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/index.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/route/index.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/headerMenuAdmin.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/headerMenuUser.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/menu.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/.htaccess" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/522bb0ce-99de-465e-bfdb-b6698640dec5.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/522bb0ce-99de-465e-bfdb-b6698640dec5/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/helpers/requestDBHelper.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/authMsg.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/add.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/add.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authorization/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/route/authorization.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/add.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/add.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/orders.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/orders.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/products.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/products.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery.php" beforeDir="false" afterPath="$PROJECT_DIR$/route/delivery.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/helpers/pageHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/pageHelper.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/orders.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/orders.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/products.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/products.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/route/authorization.php" beforeDir="false" afterPath="$PROJECT_DIR$/route/authorization.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/route/delivery.php" beforeDir="false" afterPath="$PROJECT_DIR$/route/delivery.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/route/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/route/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/footer.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/footer.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/headerMenuAdmin.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/headerMenuUser.php" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +55,11 @@
   </component>
   <component name="ComposerSettings">
     <execution />
+  </component>
+  <component name="DatabaseLocalColorSettings">
+    <colors>
+      <entry key="522bb0ce-99de-465e-bfdb-b6698640dec5" value="Blue" />
+    </colors>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -63,6 +71,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/admin" />
@@ -98,7 +107,9 @@
       <workItem from="1606406933213" duration="12218000" />
       <workItem from="1606491310266" duration="12479000" />
       <workItem from="1606504133894" duration="5284000" />
-      <workItem from="1606559164308" duration="7671000" />
+      <workItem from="1606559164308" duration="31492000" />
+      <workItem from="1606681088342" duration="1104000" />
+      <workItem from="1606753735488" duration="3876000" />
     </task>
     <servers />
   </component>
@@ -118,13 +129,49 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="794" y="-692" width="359" height="153" key="NewPhpFileDialog" timestamp="1606564773123">
+    <state x="577" y="-932" width="816" height="690" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1606576618267">
       <screen x="0" y="-1200" width="1920" height="1170" />
     </state>
-    <state x="794" y="-692" width="359" height="153" key="NewPhpFileDialog/0.0.1280.689/0.-1200.1920.1170@0.-1200.1920.1170" timestamp="1606564773123" />
+    <state x="577" y="-932" width="816" height="690" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.689/0.-1200.1920.1170@0.-1200.1920.1170" timestamp="1606576618267" />
+    <state x="702" y="-648" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1606667966151">
+      <screen x="0" y="-1200" width="1920" height="1170" />
+    </state>
+    <state x="702" y="-648" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1280.689/0.-1200.1920.1170@0.-1200.1920.1170" timestamp="1606667966151" />
+    <state width="1293" height="325" key="GridCell.Tab.0.bottom" timestamp="1606673235921">
+      <screen x="0" y="-1200" width="1920" height="1170" />
+    </state>
+    <state width="1293" height="325" key="GridCell.Tab.0.bottom/0.0.1280.689/0.-1200.1920.1170@0.-1200.1920.1170" timestamp="1606673235921" />
+    <state width="1293" height="325" key="GridCell.Tab.0.center" timestamp="1606673235921">
+      <screen x="0" y="-1200" width="1920" height="1170" />
+    </state>
+    <state width="1293" height="325" key="GridCell.Tab.0.center/0.0.1280.689/0.-1200.1920.1170@0.-1200.1920.1170" timestamp="1606673235921" />
+    <state width="1293" height="325" key="GridCell.Tab.0.left" timestamp="1606673235921">
+      <screen x="0" y="-1200" width="1920" height="1170" />
+    </state>
+    <state width="1293" height="325" key="GridCell.Tab.0.left/0.0.1280.689/0.-1200.1920.1170@0.-1200.1920.1170" timestamp="1606673235921" />
+    <state width="1293" height="325" key="GridCell.Tab.0.right" timestamp="1606673235921">
+      <screen x="0" y="-1200" width="1920" height="1170" />
+    </state>
+    <state width="1293" height="325" key="GridCell.Tab.0.right/0.0.1280.689/0.-1200.1920.1170@0.-1200.1920.1170" timestamp="1606673235921" />
+    <state width="198" height="457" key="HiddenNamespacesPopup" timestamp="1606576689135">
+      <screen x="0" y="-1200" width="1920" height="1170" />
+    </state>
+    <state width="198" height="457" key="HiddenNamespacesPopup/0.0.1280.689/0.-1200.1920.1170@0.-1200.1920.1170" timestamp="1606576689135" />
+    <state x="794" y="-692" width="359" height="153" key="NewPhpFileDialog" timestamp="1606675230146">
+      <screen x="0" y="-1200" width="1920" height="1170" />
+    </state>
+    <state x="794" y="-692" width="359" height="153" key="NewPhpFileDialog/0.0.1280.689/0.-1200.1920.1170@0.-1200.1920.1170" timestamp="1606675230146" />
     <state x="211" y="-906" key="SettingsEditor" timestamp="1606329900262">
       <screen x="0" y="-1200" width="1920" height="1170" />
     </state>
     <state x="211" y="-906" key="SettingsEditor/0.0.1280.689/0.-1200.1920.1170@0.-1200.1920.1170" timestamp="1606329900262" />
+    <state x="540" y="-960" key="com.intellij.database.dbimport.ImportDialog" timestamp="1606669570831">
+      <screen x="0" y="-1200" width="1920" height="1170" />
+    </state>
+    <state x="540" y="-960" key="com.intellij.database.dbimport.ImportDialog/0.0.1280.689/0.-1200.1920.1170@0.-1200.1920.1170" timestamp="1606669570831" />
+    <state x="616" y="-327" key="run.anything.popup" timestamp="1606753921953">
+      <screen x="0" y="-1200" width="1920" height="1170" />
+    </state>
+    <state x="616" y="-327" key="run.anything.popup/0.0.1280.689/0.-1200.1920.1170@0.-1200.1920.1170" timestamp="1606753921953" />
   </component>
 </project>

@@ -102,52 +102,9 @@ $contentArray = [
     ],
 ];
 
-//Массив главного меню
-$mainMenu = [
-    [
-        'title' => 'Главная',
-        'path' => '/',
-        'sort' => 0,
-        'admin' => null,
-    ],
-    [
-        'title' => 'Новинки',
-        'path' => '/?new=yes',
-        'sort' => 1,
-        'admin' => false,
-    ],
-    [
-        'title' => 'Sale',
-        'path' => '/?sale=yes',
-        'sort' => 2,
-        'admin' => false,
-    ],
-    [
-        'title' => 'Доставка',
-        'path' => '/delivery',
-        'sort' => 3,
-        'admin' => false,
-    ],
-];
+//Данные для подключения в БД
+$dbHost = 'localhost';
+$dbUser = 'root';
+$dbPassword = 'root';
+$dbName = 'onlinestoredb';
 
-//Массив меню для авторизованных оператора и администратора
-$adminMenu = [
-    [
-        'title' => 'Главная',
-        'path' => '/',
-        'sort' => 0,
-        'admin' => null,
-    ],
-    [
-        'title' => 'Товары',
-        'path' => '/admin/products',
-        'sort' => 1,
-        'admin' => true,
-    ],
-    [
-        'title' => 'Заказы',
-        'path' => '/admin/orders',
-        'sort' => 2,
-        'admin' => true,
-    ],
-];

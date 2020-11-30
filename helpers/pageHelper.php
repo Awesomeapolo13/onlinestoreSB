@@ -35,21 +35,26 @@ function showContent(array $contentArray, $admin = false)
     if ($admin) {
         foreach ($contentArray as $contentItem):
             if (isCurrentURL($contentItem['path']) && $contentItem['title'] !== 'Главная'):
-                return include $_SERVER['DOCUMENT_ROOT'] . $contentItem['path'] . '.php';
+                include $_SERVER['DOCUMENT_ROOT'] . $contentItem['path'] . '.php';
+                return;
             endif;
         endforeach;
     } else {
         foreach ($contentArray as $contentItem):
             if (isCurrentURL($contentItem['path']) && $contentItem['title'] !== 'Главная'):
-                return include $_SERVER['DOCUMENT_ROOT'] . '/route' . $contentItem['path'] . '.php';
+                include $_SERVER['DOCUMENT_ROOT'] . '/route' . $contentItem['path'] . '.php';
+                return;
             endif;
         endforeach;
     }
-    return include $_SERVER['DOCUMENT_ROOT'] . '/route/index.php';
-
+    include $_SERVER['DOCUMENT_ROOT'] . '/route/index.php';
 }
 
-function showMenu (array $menuArray, string $menuClass = 'footer', bool $admin = false)
+function showMenu (array $menuArray, $auth = null, string $menuClass = 'footer')
 {
+    $admin = false;
+    if (isset($auth)) {
+        $admin = true;
+    }
     include $_SERVER['DOCUMENT_ROOT'] . '/templates/menu.php';
 }
