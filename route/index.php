@@ -1,7 +1,23 @@
 <?php
+//Подключение файла с конфигурацией
 include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
+//
+$categories = requestDBHelper\getCategories();
+$products = requestDBHelper\getProducts();
 
+if (!empty($_GET)) {
+    //Фильтр по цене и типу (новинка, распродажа)
+    if (isset($_GET['submitFilter'])) {
+        $products = pageHelper\filterProducts($products, $_GET);
+    }
+    //Фильтр по категориям
+    if (isset($_GET['category'])) {
+        $products = pageHelper\queryFilter($products, 'categoryType', $_GET['category']);
+    }
+}
 
+var_dump($_GET);
+//var_dump(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) . '?' . parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
 ?>
 <main class="shop-page">
     <header class="intro">
@@ -15,23 +31,9 @@ include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
             <form>
                 <div class="filter__wrapper">
                     <b class="filter__title">Категории</b>
-                    <ul class="filter__list">
-                        <li>
-                            <a class="filter__list-item active" href="#">Все</a>
-                        </li>
-                        <li>
-                            <a class="filter__list-item" href="#">Женщины</a>
-                        </li>
-                        <li>
-                            <a class="filter__list-item" href="#">Мужчины</a>
-                        </li>
-                        <li>
-                            <a class="filter__list-item" href="#">Дети</a>
-                        </li>
-                        <li>
-                            <a class="filter__list-item" href="#">Аксессуары</a>
-                        </li>
-                    </ul>
+                    <?php include $_SERVER['DOCUMENT_ROOT'] . '/templates/categories.php'; //вывод списка категорий товаров?>
+                    <input type="hidden" name="category"
+                           value="<?= isset($_GET['category']) ? htmlspecialchars($_GET['category']) : '' ?>">
                 </div>
                 <div class="filter__wrapper">
                     <b class="filter__title">Фильтры</b>
@@ -40,18 +42,26 @@ include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
                         <div class="range__line" aria-label="Range Line"></div>
                         <div class="range__res">
                             <span class="range__res-item min-price">350 руб.</span>
+                            <input type="hidden" class="input_min_price" name="minPrice"
+                                   value="<?= isset($_GET['minPrice']) ? htmlspecialchars($_GET['minPrice']) : '350' ?>">
                             <span class="range__res-item max-price">32 000 руб.</span>
+                            <input type="hidden" class="input_max_price" name="maxPrice"
+                                   value="<?= isset($_GET['maxPrice']) ? htmlspecialchars($_GET['maxPrice']) : '32000' ?>">
                         </div>
                     </div>
                 </div>
 
                 <fieldset class="custom-form__group">
-                    <input type="checkbox" name="new" id="new" class="custom-form__checkbox">
+                    <input type="checkbox" name="new" id="new"
+                           class="custom-form__checkbox" <?php if (isset($_GET['new']) && $_GET['new'] === 'on'): ?> checked<?php endif; ?>>
                     <label for="new" class="custom-form__checkbox-label custom-form__info" style="display: block;">Новинка</label>
-                    <input type="checkbox" name="sale" id="sale" class="custom-form__checkbox">
+                    <input type="checkbox" name="sale" id="sale"
+                           class="custom-form__checkbox" <?php if (isset($_GET['sale']) && $_GET['sale'] === 'on'): ?> checked<?php endif; ?>>
                     <label for="sale" class="custom-form__checkbox-label custom-form__info" style="display: block;">Распродажа</label>
                 </fieldset>
-                <button class="button" type="submit" style="width: 100%">Применить</button>
+                <button class="button" type="submit" name="submitFilter" value="submitFilter" style="width: 100%">
+                    Применить
+                </button>
             </form>
         </section>
 
@@ -74,69 +84,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
                 <p class="shop__sorting-res">Найдено <span class="res-sort">858</span> моделей</p>
             </section>
             <section class="shop__list">
-                <article class="shop__item product" tabindex="0">
-                    <div class="product__image">
-                        <img src="/img/products/product-1.jpg" alt="product-name">
-                    </div>
-                    <p class="product__name">Платье со складками</p>
-                    <span class="product__price">2 999 руб.</span>
-                </article>
-                <article class="shop__item product" tabindex="0">
-                    <div class="product__image">
-                        <img src="/img/products/product-2.jpg" alt="product-name">
-                    </div>
-                    <p class="product__name">Платье со складками</p>
-                    <span class="product__price">2 999 руб.</span>
-                </article>
-                <article class="shop__item product" tabindex="0">
-                    <div class="product__image">
-                        <img src="/img/products/product-3.jpg" alt="product-name">
-                    </div>
-                    <p class="product__name">Платье со складками</p>
-                    <span class="product__price">2 999 руб.</span>
-                </article>
-                <article class="shop__item product" tabindex="0">
-                    <div class="product__image">
-                        <img src="/img/products/product-4.jpg" alt="product-name">
-                    </div>
-                    <p class="product__name">Платье со складками</p>
-                    <span class="product__price">2 999 руб.</span>
-                </article>
-                <article class="shop__item product" tabindex="0">
-                    <div class="product__image">
-                        <img src="/img/products/product-5.jpg" alt="product-name">
-                    </div>
-                    <p class="product__name">Платье со складками</p>
-                    <span class="product__price">2 999 руб.</span>
-                </article>
-                <article class="shop__item product" tabindex="0">
-                    <div class="product__image">
-                        <img src="/img/products/product-6.jpg" alt="product-name">
-                    </div>
-                    <p class="product__name">Платье со складками</p>
-                    <span class="product__price">2 999 руб.</span>
-                </article>
-                <article class="shop__item product" tabindex="0">
-                    <div class="product__image">
-                        <img src="/img/products/product-7.jpg" alt="product-name">
-                    </div>
-                    <p class="product__name">Платье со складками</p>
-                    <span class="product__price">2 999 руб.</span>
-                </article>
-                <article class="shop__item product" tabindex="0">
-                    <div class="product__image">
-                        <img src="/img/products/product-8.jpg" alt="product-name">
-                    </div>
-                    <p class="product__name">Платье со складками</p>
-                    <span class="product__price">2 999 руб.</span>
-                </article>
-                <article class="shop__item product" tabindex="0">
-                    <div class="product__image">
-                        <img src="/img/products/product-9.jpg" alt="product-name">
-                    </div>
-                    <p class="product__name">Платье со складками</p>
-                    <span class="product__price">2 999 руб.</span>
-                </article>
+                <?php pageHelper\showProducts($products); //вывод списка товаров ?>
             </section>
             <ul class="shop__paginator paginator">
                 <li>

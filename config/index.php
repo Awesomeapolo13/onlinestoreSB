@@ -38,13 +38,13 @@ $menuArray = [
     ],
     [
         'title' => 'Новинки',
-        'path' => '/?new=yes',
+        'path' => '/?new=on',
         'sort' => 1,
         'admin' => false,
     ],
     [
         'title' => 'Sale',
-        'path' => '/?sale=yes',
+        'path' => '/?sale=on',
         'sort' => 2,
         'admin' => false,
     ],

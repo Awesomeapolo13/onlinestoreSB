@@ -307,6 +307,9 @@ if (productsList) {
 
 }
 
+let minPrice = '';
+let maxPrice = '';
+
 // jquery range maxmin
 if (document.querySelector('.shop-page')) {
 
@@ -319,13 +322,13 @@ if (document.querySelector('.shop-page')) {
 
       $('.min-price').text($('.range__line').slider('values', 0) + ' руб.');
       $('.max-price').text($('.range__line').slider('values', 1) + ' руб.');
-
+      minPrice = $('.input_min_price').val($('.range__line').slider('values', 0));
+      maxPrice = $('.input_max_price').val($('.range__line').slider('values', 1));
     },
     slide: function(event, ui) {
 
       $('.min-price').text($('.range__line').slider('values', 0) + ' руб.');
       $('.max-price').text($('.range__line').slider('values', 1) + ' руб.');
-
     }
   });
 
