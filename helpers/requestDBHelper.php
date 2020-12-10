@@ -41,6 +41,9 @@ left join categories c on products.category_id = c.id;")) {
     }
 }
 
+/**Функция - запрос имеющихся категорий
+ * @return array - массив категорий товаров
+ */
 function getCategories()
 {
     if ($requestAuth = mysqli_query(getConnection(),

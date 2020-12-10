@@ -1,22 +1,41 @@
 <?php
 //Подключение файла с конфигурацией
 include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
-//
+//Запросы в БД
 $categories = requestDBHelper\getCategories();
 $products = requestDBHelper\getProducts();
+// Колличество страниц необходимое для отображения товара
+$pages = intdiv(count($products), 9);
+//Текущая страница приложения
+$page = null;
+//Сообщения об ошибках
+$sortErrorMsg = '';
 
 if (!empty($_GET)) {
     //Фильтр по цене и типу (новинка, распродажа)
-    if (isset($_GET['submitFilter'])) {
+    if (isset($_GET['submitFilter']) || isset($_GET['new']) || isset($_GET['sale'])) {
         $products = pageHelper\filterProducts($products, $_GET);
     }
     //Фильтр по категориям
     if (isset($_GET['category'])) {
         $products = pageHelper\queryFilter($products, 'categoryType', $_GET['category']);
     }
+    //Сортировка
+    if (isset($_GET['sortCategory']) && isset($_GET['orderCategory'])) {
+        $products = pageHelper\sortProducts($products, $_GET['sortCategory'], $_GET['orderCategory']);
+        $sortErrorMsg = '';
+//        var_dump($products);
+    } elseif (isset($_GET['sortCategory'])) {
+        $sortErrorMsg = 'Выберите параметр для сортировки';
+    } elseif (isset($_GET['orderCategory'])) {
+        $sortErrorMsg = 'Выберите параметр порядок сортировки';
+    }
+    //Определение текущей страницы товаров
 }
+//Определение номера текущей страницы
+$page = $_GET['page'] ?? 1;
 
-var_dump($_GET);
+//var_dump($_GET);
 //var_dump(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) . '?' . parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
 ?>
 <main class="shop-page">
@@ -28,7 +47,8 @@ var_dump($_GET);
     </header>
     <section class="shop container">
         <section class="shop__filter filter">
-            <form>
+            <!--            Параметры фильтрации-->
+            <form id="filterForm">
                 <div class="filter__wrapper">
                     <b class="filter__title">Категории</b>
                     <?php include $_SERVER['DOCUMENT_ROOT'] . '/templates/categories.php'; //вывод списка категорий товаров?>
@@ -64,36 +84,45 @@ var_dump($_GET);
                 </button>
             </form>
         </section>
-
+        <!--        Параметры сортировки-->
         <div class="shop__wrapper">
             <section class="shop__sorting">
                 <div class="shop__sorting-item custom-form__select-wrapper">
-                    <select class="custom-form__select" name="category">
-                        <option hidden="">Сортировка</option>
-                        <option value="price">По цене</option>
-                        <option value="name">По названию</option>
+                    <select class="custom-form__select" name="sortCategory" form="filterForm"
+                            onchange="getSortParams()">
+                        <option hidden="" value="null">Сортировка</option>
+                        <option value="price"
+                                <?php if (isset($_GET['sortCategory']) && $_GET['sortCategory'] === 'price'): ?>selected<?php endif; ?>>
+                            По цене
+                        </option>
+                        <option value="name"
+                                <?php if (isset($_GET['sortCategory']) && $_GET['sortCategory'] === 'name'): ?>selected<?php endif; ?>>
+                            По названию
+                        </option>
                     </select>
                 </div>
                 <div class="shop__sorting-item custom-form__select-wrapper">
-                    <select class="custom-form__select" name="prices">
-                        <option hidden="">Порядок</option>
-                        <option value="all">По возрастанию</option>
-                        <option value="woman">По убыванию</option>
+                    <select class="custom-form__select" name="orderCategory" form="filterForm"
+                            onchange="getOrderParams()">
+                        <option hidden="" value="null">Порядок</option>
+                        <option value="<?= SORT_ASC?>"
+                                <?php if (isset($_GET['orderCategory']) && $_GET['orderCategory'] == SORT_ASC): ?>selected<?php endif; ?>>
+                            По возрастанию
+                        </option>
+                        <option value="<?= SORT_DESC?>"
+                                <?php if (isset($_GET['orderCategory']) && $_GET['orderCategory'] == SORT_DESC): ?>selected<?php endif; ?>>
+                            По убыванию
+                        </option>
                     </select>
                 </div>
-                <p class="shop__sorting-res">Найдено <span class="res-sort">858</span> моделей</p>
+                <p class="shop__sorting-res">Найдено <span class="res-sort"><?= count($products) ?></span> моделей</p>
             </section>
+            <p><?= $sortErrorMsg ?></p>
+            <!--            Список товаров-->
             <section class="shop__list">
-                <?php pageHelper\showProducts($products); //вывод списка товаров ?>
+                <?php pageHelper\showProducts($products, $pages, $page); //вывод списка товаров ?>
             </section>
-            <ul class="shop__paginator paginator">
-                <li>
-                    <a class="paginator__item">1</a>
-                </li>
-                <li>
-                    <a class="paginator__item" href="">2</a>
-                </li>
-            </ul>
+            <?php pageHelper\showPaginator($pages, $page);?>
         </div>
     </section>
     <section class="shop-page__order" hidden="">
@@ -115,7 +144,7 @@ var_dump($_GET);
                             <p class="custom-form__input-label">Имя <span class="req">*</span></p>
                         </label>
                         <label class="custom-form__input-wrapper" for="thirdName">
-                            <input id="thirdName" class="custom-form__input" type="text" name="thirdName">
+                            <input id="thirdName" class="custom-form__input" type="text" name="patronymic">
                             <p class="custom-form__input-label">Отчество</p>
                         </label>
                         <label class="custom-form__input-wrapper" for="phone">

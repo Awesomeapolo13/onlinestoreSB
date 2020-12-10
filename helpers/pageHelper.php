@@ -99,22 +99,76 @@ function filterProducts(array $productsArr, array $filterParamArr)
     return $filteredProducts;
 }
 
-function queryFilter($array, $field, $filter)
+/** Функция фитрации по определенному полю
+ * @param array $array - фильтруемый массив
+ * @param string $field - ключь массива по которому нужно его отфильтровать
+ * @param string $filter - значение по которому происзодит фильтрация
+ * @return array - отфильтрованный массив
+ */
+function queryFilter(array $array, string $field, string $filter)
 {
     $filteredArr = [];
-    foreach ($array as $arrElem)
+    foreach ($array as $arrElem) {
         if ($arrElem[$field] === $filter) {
             $filteredArr[] = $arrElem;
         }
+        if (!$filter) { //если фильтр не задан включаем все элементы массива
+            $filteredArr[] = $arrElem;
+        }
+    }
     return $filteredArr;
 }
 
-/**Функция отображения товаров
- * @param $productsArr - массив товаров
+/**Функция сортировки массива по ключу
+ * @param array $array массив, который необходимо отсортировать
+ * @param $key - значение ключа подмассива, по которому необходимо произвести сортировку
+ * @param int $sort - порядок сортировки, SORT_ASC - прямой, SORT_DESC - обратный порядок
+ * @return array - массив отсортированный в соответствии с переданными парамметрами
  */
-function showProducts($productsArr)
+function sortProducts(array $array, $key, $sort = SORT_ASC)
 {
-    foreach ($productsArr as $product):
+    usort($array, function ($item1, $item2) use ($key, $sort) {
+        switch ($sort) {
+            case SORT_ASC:
+                return $item1[$key] <=> $item2[$key];
+            case SORT_DESC:
+                return $item2[$key] <=> $item1[$key];
+        }
+    });
+
+    return $array;
+}
+
+/**Функция отображения товаров
+ * @param array $productsArr - массив товаров
+ * @param int $pages - колличество страниц с товарами
+ * @param int $currentPage - текущая страница
+ * @param int $limit - пределельнео количество товаров на одной странице
+ */
+function showProducts(array $productsArr, int $pages, $currentPage = 1, $limit = 9)
+{
+    $productPage = []; //массив из товаров входящих в одну страницу
+    $productPages = []; //массив страниц с товарами
+    for ($i = 1; $i <= $pages; $i++) {
+        for ($j = 0; $j <= $limit - 1; $j++) {
+            $productPage[] = $productsArr[$j]; //записываем в массив страницы товары, которые будут на ней отображаться
+        }
+        $productPages[$i] = $productPage; //добавляем страницу в массив страниц
+    }
+    //вывод контента определнной страницы
+    foreach ($productPages[$currentPage] as $product) {
         include $_SERVER['DOCUMENT_ROOT'] . '/templates/productItem.php'; //вывод списка товаров
-    endforeach;
+    }
+}
+
+/**Функция отображения доступных страниц с товарами
+ * @param int $pages - количество страниц с товарами
+ * @param int $currentPage - текущая страница
+ */
+function showPaginator(int $pages, int $currentPage)
+{
+    $productsParams = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+    for ($page = 1; $page <= $pages; $page++) {
+        include $_SERVER['DOCUMENT_ROOT'] . '/templates/paginator.php';
+    }
 }
