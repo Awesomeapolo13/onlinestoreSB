@@ -105,11 +105,11 @@ $page = $_GET['page'] ?? 1;
                     <select class="custom-form__select" name="orderCategory" form="filterForm"
                             onchange="getOrderParams()">
                         <option hidden="" value="null">Порядок</option>
-                        <option value="<?= SORT_ASC?>"
+                        <option value="<?= SORT_ASC ?>"
                                 <?php if (isset($_GET['orderCategory']) && $_GET['orderCategory'] == SORT_ASC): ?>selected<?php endif; ?>>
                             По возрастанию
                         </option>
-                        <option value="<?= SORT_DESC?>"
+                        <option value="<?= SORT_DESC ?>"
                                 <?php if (isset($_GET['orderCategory']) && $_GET['orderCategory'] == SORT_DESC): ?>selected<?php endif; ?>>
                             По убыванию
                         </option>
@@ -122,7 +122,7 @@ $page = $_GET['page'] ?? 1;
             <section class="shop__list">
                 <?php pageHelper\showProducts($products, $pages, $page); //вывод списка товаров ?>
             </section>
-            <?php pageHelper\showPaginator($pages, $page);?>
+            <?php pageHelper\showPaginator($pages, $page); ?>
         </div>
     </section>
     <section class="shop-page__order" hidden="">
@@ -148,11 +148,11 @@ $page = $_GET['page'] ?? 1;
                             <p class="custom-form__input-label">Отчество</p>
                         </label>
                         <label class="custom-form__input-wrapper" for="phone">
-                            <input id="phone" class="custom-form__input" type="tel" name="thirdName" required="">
+                            <input id="phone" class="custom-form__input" type="tel" name="phone" required="">
                             <p class="custom-form__input-label">Телефон <span class="req">*</span></p>
                         </label>
                         <label class="custom-form__input-wrapper" for="email">
-                            <input id="email" class="custom-form__input" type="email" name="thirdName" required="">
+                            <input id="email" class="custom-form__input" type="email" name="email" required="">
                             <p class="custom-form__input-label">Почта <span class="req">*</span></p>
                         </label>
                     </div>
@@ -206,9 +206,9 @@ $page = $_GET['page'] ?? 1;
                                        name="home">
                                 <p class="custom-form__input-label">Дом <span class="req">*</span></p>
                             </label>
-                            <label class="custom-form__input-wrapper" for="aprt">
-                                <input id="aprt" class="custom-form__input custom-form__input--small" type="text"
-                                       name="aprt">
+                            <label class="custom-form__input-wrapper" for="apartment">
+                                <input id="apartment" class="custom-form__input custom-form__input--small" type="text"
+                                       name="apartment">
                                 <p class="custom-form__input-label">Квартира <span class="req">*</span></p>
                             </label>
                         </div>
@@ -225,7 +225,8 @@ $page = $_GET['page'] ?? 1;
                     <legend class="custom-form__title custom-form__title--comment">Комментарии к заказу</legend>
                     <textarea class="custom-form__textarea" name="comment"></textarea>
                 </fieldset>
-                <button class="button" type="submit">Отправить заказ</button>
+                <p class="server-form-error"></p>
+                <button class="button" type="submit" name="send_order" value="true">Отправить заказ</button>
             </form>
         </div>
     </section>

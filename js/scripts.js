@@ -103,13 +103,13 @@ if (filterWrapper) {
 
 }
 
+//Перечень товаров и форма оформления заказа
 const shopList = document.querySelector('.shop__list');
 if (shopList) {
 
     shopList.addEventListener('click', (evt) => {
 
         const prod = evt.path || (evt.composedPath && evt.composedPath());
-        ;
 
         if (prod.some(pathItem => pathItem.classList && pathItem.classList.contains('shop__item'))) {
 
@@ -135,6 +135,8 @@ if (shopList) {
                 form.noValidate = true;
 
                 const inputs = Array.from(shopOrder.querySelectorAll('[required]'));
+                const radios = Array.from(shopOrder.querySelectorAll('[checked]'));
+                let isValidForm = false;
 
                 inputs.forEach(inp => {
 
@@ -143,13 +145,55 @@ if (shopList) {
                         if (inp.classList.contains('custom-form__input--error')) {
                             inp.classList.remove('custom-form__input--error');
                         }
+                        isValidForm = true;
 
                     } else {
 
                         inp.classList.add('custom-form__input--error');
-
+                        isValidForm = false
                     }
                 });
+                //В случае успешной валидации направить ajax запрос
+                if (isValidForm) {
+                    let orderData = {};//объект с данными формы
+                    //запись данных из обязательных полей
+                    inputs.forEach(inp => {
+                        // console.log(inp.getAttribute('name'));
+                        orderData[inp.getAttribute('name')] = inp.value;
+                    });
+                    //запись данных из радио-кнопок
+                    radios.forEach(radio => {
+                        console.log(radio.getAttribute('name'));
+                        orderData[radio.getAttribute('name')] = radio.value;
+                    });
+                    //запись данных кнопки
+                    orderData[buttonOrder.getAttribute('name')] = buttonOrder.value;
+
+                    const commentArea = document.querySelector('.custom-form__textarea');
+                    //запись данных из textarea
+                    orderData[commentArea.getAttribute('name')] = commentArea.value;
+
+                    console.log(orderData);
+
+                    $.ajax({
+                        url: '/server/index.php',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: orderData,
+                        success: function (response) {
+                            console.log('success');
+                            const serverSuccess = document.querySelector('.shop-page__end-message');
+                            serverSuccess.textContent = response.message;
+                        },
+                        error: function (e) {
+                            console.log('error', e);
+
+                            const serverErr = document.querySelector('.shop-page__end-message');
+                            serverErr.textContent = 'Заполните все обязательные поля';
+                        }
+                    });
+                }
+
 
                 if (inputs.every(inp => !!inp.value)) {
 

@@ -143,10 +143,17 @@ function sortProducts(array $array, $key, $sort = SORT_ASC)
  * @param array $productsArr - массив товаров
  * @param int $pages - колличество страниц с товарами
  * @param int $currentPage - текущая страница
- * @param int $limit - пределельнео количество товаров на одной странице
  */
-function showProducts(array $productsArr, int $pages, $currentPage = 1, $limit = 9)
+function showProducts(array $productsArr, int $pages, $currentPage = 1)
 {
+    $limit = null; //максимальное колличество позиция товара на одной странице
+    $productsCount = count($productsArr);
+    if ($productsCount >= 9) {
+        $limit = 9;
+    } else {
+        $limit = count($productsArr);
+    }
+
     $productPage = []; //массив из товаров входящих в одну страницу
     $productPages = []; //массив страниц с товарами
     for ($i = 1; $i <= $pages; $i++) {

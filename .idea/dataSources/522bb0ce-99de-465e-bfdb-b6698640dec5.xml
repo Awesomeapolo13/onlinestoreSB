@@ -904,12 +904,12 @@ SELECT|mysql.user
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="269" parent="241" name="delivery_type">
+    <column id="269" parent="241" name="delivery">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="270" parent="241" name="payment_type">
+    <column id="270" parent="241" name="pay">
       <Position>6</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
