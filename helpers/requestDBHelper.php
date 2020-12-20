@@ -51,3 +51,33 @@ function getCategories()
         return mysqli_fetch_all($requestAuth, MYSQLI_ASSOC);
     }
 }
+
+/**Функция - запрос на добавление заказа
+ * @param $orderArr
+ * @return bool|\mysqli_result
+ */
+function createOrder($orderArr)
+{
+    $requestString = "";
+    $name = mysqli_real_escape_string(getConnection(), $orderArr['name']); // имя заказчика
+    $surname = mysqli_real_escape_string(getConnection(), $orderArr['surname']); // фамилия заказчика
+    empty($orderArr['patronymic']) ? $patronymic = null : $patronymic = mysqli_real_escape_string(getConnection(), $orderArr['patronymic']); // отчество заказчика
+    $delivery = mysqli_real_escape_string(getConnection(), $orderArr['delivery']); // тип доставки
+    $pay = mysqli_real_escape_string(getConnection(), $orderArr['pay']); // способ оплаты
+    $comment = mysqli_real_escape_string(getConnection(), $orderArr['comment']); // тклкфон заказчика
+    $productId = mysqli_real_escape_string(getConnection(), $orderArr['productId']); // идентификатор товара
+    $timeStamp = date("Y-m-d H:i:s"); // время отправления
+    empty($orderArr['city']) ? $city = 'NULL' : $city = mysqli_real_escape_string(getConnection(), $orderArr['city']); // город
+    empty($orderArr['street']) ? $street = 'NULL' : $street = mysqli_real_escape_string(getConnection(), $orderArr['street']); // улица
+    empty($orderArr['home']) ? $home = 'NULL' : $home = mysqli_real_escape_string(getConnection(), $orderArr['home']); // дом
+    empty($orderArr['apartment']) ? $apartment = 'NULL' : $apartment = mysqli_real_escape_string(getConnection(), $orderArr['apartment']); // квартира
+    $price = mysqli_real_escape_string(getConnection(), $orderArr['orderPrice']); // цена заказа с учетом стоимости доставки
+    $email = mysqli_real_escape_string(getConnection(), $orderArr['email']); // электронная почта заказчика
+    $phone = mysqli_real_escape_string(getConnection(), $orderArr['phone']); // тклкфон заказчика
+
+    if ($requestCreateOrder = mysqli_query(getConnection(),
+        "insert into orders (`name`, surname, patronymic, delivery, pay, comment, product_id, `timestamp`, city, street, home, apartment, price, done, email, phone)
+values ('$name', '$surname', '$patronymic', '$delivery', '$pay', '$comment', '$productId', '$timeStamp', '$city', '$street', '$home', '$apartment', '$price', 0, '$email', '$phone')")) {
+        return $requestCreateOrder;
+    }
+}

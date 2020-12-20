@@ -103,6 +103,30 @@ if (filterWrapper) {
 
 }
 
+//Выделение цены и идентификатора товара
+
+let productId = null; //идентификатор товара
+let productPrice = null; //цена товара
+
+
+let products = document.querySelectorAll('.shop__item');
+for (let product of products) {
+
+    product.addEventListener('click', () => {
+
+        for (let elem of product.childNodes) {
+            if (elem.tagName === 'INPUT' && elem.getAttribute('class') === 'productId') {
+                productId = elem.value;
+                console.log(productId);
+            }
+            if (elem.tagName === 'INPUT' && elem.getAttribute('class') === 'price') {
+                productPrice = elem.value;
+                console.log(productPrice);
+            }
+        }
+    })
+}
+
 //Перечень товаров и форма оформления заказа
 const shopList = document.querySelector('.shop__list');
 if (shopList) {
@@ -111,7 +135,9 @@ if (shopList) {
 
         const prod = evt.path || (evt.composedPath && evt.composedPath());
 
+
         if (prod.some(pathItem => pathItem.classList && pathItem.classList.contains('shop__item'))) {
+
 
             const shopOrder = document.querySelector('.shop-page__order');
 
@@ -127,6 +153,23 @@ if (shopList) {
 
             toggleDelivery(shopOrder);
 
+
+            //радионопки
+            const radios = Array.from(shopOrder.querySelectorAll('.custom-form__radio'));
+            let orderData = {};//объект с данными формы
+            //запись данных из радио-кнопок
+
+            radios.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    console.log('чекд', radio.checked);
+                    if (radio.checked) {
+                        console.log(radio.getAttribute('name'));
+                        orderData[radio.getAttribute('name')] = radio.value;
+                    }
+                });
+            });
+
+
             const buttonOrder = shopOrder.querySelector('.button');
             const popupEnd = document.querySelector('.shop-page__popup-end');
 
@@ -135,8 +178,10 @@ if (shopList) {
                 form.noValidate = true;
 
                 const inputs = Array.from(shopOrder.querySelectorAll('[required]'));
-                const radios = Array.from(shopOrder.querySelectorAll('[checked]'));
+
                 let isValidForm = false;
+
+
 
                 inputs.forEach(inp => {
 
@@ -153,49 +198,63 @@ if (shopList) {
                         isValidForm = false
                     }
                 });
+
+                let requestError = false;
                 //В случае успешной валидации направить ajax запрос
                 if (isValidForm) {
-                    let orderData = {};//объект с данными формы
+
+
                     //запись данных из обязательных полей
                     inputs.forEach(inp => {
                         // console.log(inp.getAttribute('name'));
                         orderData[inp.getAttribute('name')] = inp.value;
                     });
-                    //запись данных из радио-кнопок
-                    radios.forEach(radio => {
-                        console.log(radio.getAttribute('name'));
-                        orderData[radio.getAttribute('name')] = radio.value;
-                    });
-                    //запись данных кнопки
-                    orderData[buttonOrder.getAttribute('name')] = buttonOrder.value;
+                    //запись данных из полей отчества
+                    const patronymic = document.getElementById('thirdName');
+                    orderData[patronymic.getAttribute('name')] = patronymic.value;
 
-                    const commentArea = document.querySelector('.custom-form__textarea');
+
+                    //добавляем значения цены и идентификатора товара
+                    orderData['productId'] = productId;
+                    orderData['productPrice'] = productPrice;
+
                     //запись данных из textarea
+                    const commentArea = document.querySelector('.custom-form__textarea');
                     orderData[commentArea.getAttribute('name')] = commentArea.value;
 
+                    //запись данных кнопки
+                    orderData[buttonOrder.getAttribute('name')] = buttonOrder.value;
                     console.log(orderData);
+
 
                     $.ajax({
                         url: '/server/index.php',
                         type: 'POST',
                         dataType: 'json',
                         data: orderData,
+                        cache: false,
                         success: function (response) {
-                            console.log('success');
+                            console.log('success', response);
                             const serverSuccess = document.querySelector('.shop-page__end-message');
-                            serverSuccess.textContent = response.message;
+
+                            if (response.error) {
+                                serverError.textContent = response.message;
+                                requestError = response.error;
+                            } else {
+                                serverSuccess.textContent = response.message;
+                            }
                         },
                         error: function (e) {
                             console.log('error', e);
-
-                            const serverErr = document.querySelector('.shop-page__end-message');
-                            serverErr.textContent = 'Заполните все обязательные поля';
+                            requestError = true;
+                            serverError.textContent = 'Заполните все обязательные поля';
                         }
                     });
                 }
 
+                const serverError = document.querySelector('.error');
 
-                if (inputs.every(inp => !!inp.value)) {
+                if (inputs.every(inp => !!inp.value) && !requestError) {
 
                     evt.preventDefault();
 
@@ -420,7 +479,6 @@ function getOrderParams() {
         }
     });
 }
-
 
 
 // let sortSelect = document.querySelector('.')

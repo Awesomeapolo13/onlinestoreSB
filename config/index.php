@@ -1,5 +1,13 @@
 <?php
 
+//Данные для подключения в БД
+$dbHost = 'localhost';
+$dbUser = 'root';
+$dbPassword = 'root';
+//$dsn = 'root:host=localhost;date=onlinestoredb';
+$dbName = 'onlinestoredb';
+
+
 //Массив содержащий контент тегов title
 $titleArray = [
     [
@@ -38,13 +46,13 @@ $menuArray = [
     ],
     [
         'title' => 'Новинки',
-        'path' => '/?new=on',
+        'path' => '/?new=1',
         'sort' => 1,
         'admin' => false,
     ],
     [
         'title' => 'Sale',
-        'path' => '/?sale=on',
+        'path' => '/?sale=1',
         'sort' => 2,
         'admin' => false,
     ],
@@ -102,9 +110,9 @@ $contentArray = [
     ],
 ];
 
-//Данные для подключения в БД
-$dbHost = 'localhost';
-$dbUser = 'root';
-$dbPassword = 'root';
-$dbName = 'onlinestoredb';
+//Конфигурация доставки
 
+$standardDeliveryPrice = 280;
+$onPurchaseDayDeliveryPrice = 560;
+$deliveryWithFittingPrice = 280;
+$limitFreeDelivery = 2000;

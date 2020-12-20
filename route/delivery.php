@@ -18,14 +18,15 @@ include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
         </header>
         <ul class="page-delivery__list">
             <li>
-                <b class="page-delivery__item-title">Стандартная доставка - 280 РУБ / БЕСПЛАТНО (ДЛЯ ЗАКАЗОВ ОТ 2000
+                <b class="page-delivery__item-title">Стандартная доставка - <?= $standardDeliveryPrice ?> РУБ /
+                    БЕСПЛАТНО (ДЛЯ ЗАКАЗОВ ОТ <?= $limitFreeDelivery ?>
                     РУБ)</b>
                 <p class="page-delivery__item-desc">
                     Примерный срок доставки составит около 2-7 рабочих дней, в зависимости от адреса доставки.
                 </p>
             </li>
             <li>
-                <b class="page-delivery__item-title">В день покупки - 560 РУБ</b>
+                <b class="page-delivery__item-title">В день покупки - <?= $onPurchaseDayDeliveryPrice ?> РУБ</b>
                 <p class="page-delivery__item-desc">
                     Доступна для жителей г. Москва в пределах МКАД. Заказы, оформленныес понедельника по пятницу до
                     14:00 будут доставлены в тот же день с 19:00до 23:00. Изменение адреса доставки после оформления
@@ -33,8 +34,9 @@ include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
                 </p>
             </li>
             <li>
-                <b class="page-delivery__item-title">Доставка с примеркой перед покупкой по Москве - 280 РУБ / БЕСПЛАТНО
-                    (ПРИ ВЫКУПЕ НА СУММУ ОТ 2000 РУБ)</b>
+                <b class="page-delivery__item-title">Доставка с примеркой перед покупкой по Москве
+                    - <?= $deliveryWithFittingPrice ?> РУБ / БЕСПЛАТНО
+                    (ПРИ ВЫКУПЕ НА СУММУ ОТ <?= $limitFreeDelivery ?> РУБ)</b>
                 <p class="page-delivery__item-desc">
                     Доставка возможна только по Москве (в пределах МКАД) в течение 2-3 дней.
                     Воспользовавшись услугой «Примерка перед покупкой», вы можете получить свой заказ и примерить
@@ -50,6 +52,6 @@ include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
             готов к выдаче. В день доставки заказа мы отправим вам SMS-уведомлениес номером телефона сотрудника службы
             доставки.
         </p>
-        <a class="page-delivery__button button" href="index.php">Продолжить покупки</a>
+        <a class="page-delivery__button button" href="/">Продолжить покупки</a>
     </section>
 </main>

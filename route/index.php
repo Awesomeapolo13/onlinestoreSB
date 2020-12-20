@@ -13,12 +13,20 @@ $sortErrorMsg = '';
 
 if (!empty($_GET)) {
     //Фильтр по цене и типу (новинка, распродажа)
-    if (isset($_GET['submitFilter']) || isset($_GET['new']) || isset($_GET['sale'])) {
+    if (isset($_GET['submitFilter'])) {
         $products = pageHelper\filterProducts($products, $_GET);
     }
     //Фильтр по категориям
     if (isset($_GET['category'])) {
         $products = pageHelper\queryFilter($products, 'categoryType', $_GET['category']);
+    }
+    //Фильтр по категориям
+    if (isset($_GET['new'])) {
+        $products = pageHelper\queryFilter($products, 'new', $_GET['new']);
+    }
+    //Фильтр по категориям
+    if (isset($_GET['sale'])) {
+        $products = pageHelper\queryFilter($products, 'sale', $_GET['sale']);
     }
     //Сортировка
     if (isset($_GET['sortCategory']) && isset($_GET['orderCategory'])) {
@@ -30,7 +38,6 @@ if (!empty($_GET)) {
     } elseif (isset($_GET['orderCategory'])) {
         $sortErrorMsg = 'Выберите параметр порядок сортировки';
     }
-    //Определение текущей страницы товаров
 }
 //Определение номера текущей страницы
 $page = $_GET['page'] ?? 1;
@@ -160,7 +167,7 @@ $page = $_GET['page'] ?? 1;
                 <fieldset class="custom-form__group js-radio">
                     <legend class="custom-form__title custom-form__title--radio">Способ доставки</legend>
                     <input id="dev-no" class="custom-form__radio" type="radio" name="delivery" value="dev-no"
-                           checked="">
+                           checked>
                     <label for="dev-no" class="custom-form__radio-label">Самовывоз</label>
                     <input id="dev-yes" class="custom-form__radio" type="radio" name="delivery" value="dev-yes">
                     <label for="dev-yes" class="custom-form__radio-label">Курьерная доставка</label>
@@ -214,6 +221,7 @@ $page = $_GET['page'] ?? 1;
                         </div>
                     </fieldset>
                 </div>
+
                 <fieldset class="custom-form__group shop-page__pay">
                     <legend class="custom-form__title custom-form__title--radio">Способ оплаты</legend>
                     <input id="cash" class="custom-form__radio" type="radio" name="pay" value="cash">
@@ -225,8 +233,11 @@ $page = $_GET['page'] ?? 1;
                     <legend class="custom-form__title custom-form__title--comment">Комментарии к заказу</legend>
                     <textarea class="custom-form__textarea" name="comment"></textarea>
                 </fieldset>
+                <input type="hidden" class="productId" name="productId" value="">
+                <input type="hidden" class="price" name="price" value="">
                 <p class="server-form-error"></p>
-                <button class="button" type="submit" name="send_order" value="true">Отправить заказ</button>
+                <button class="button" type="button" name="send_order" value="true">Отправить заказ</button>
+                <p class="error">Заполните все обязательные поля</p>
             </form>
         </div>
     </section>
