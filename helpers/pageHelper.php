@@ -179,3 +179,10 @@ function showPaginator(int $pages, int $currentPage)
         include $_SERVER['DOCUMENT_ROOT'] . '/templates/paginator.php';
     }
 }
+
+function showOrders($ordersArr)
+{
+    foreach ($ordersArr as $order) {
+        include $_SERVER['DOCUMENT_ROOT'] . '/templates/orderItem.php';
+    }
+}

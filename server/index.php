@@ -31,6 +31,12 @@ if (!empty($_POST)) {
         ];
         echo json_encode($result);
     }
+    if (isset($_POST['changeStatus'])) {
+        $message = '';
+        $_POST['done'] ? $message = 'Статус заказа изменен на выполнено' : $message = 'Статус заказа изменен на не выполнено';
+        requestDBHelper\changeStatus($_POST);
+        echo json_encode($message);
+    }
 }
 
 mysqli_close(requestDBHelper\getConnection());

@@ -182,7 +182,6 @@ if (shopList) {
                 let isValidForm = false;
 
 
-
                 inputs.forEach(inp => {
 
                     if (!!inp.value) {
@@ -291,6 +290,24 @@ if (shopList) {
     });
 }
 
+//определяем id заказа, на котором был сделан клик и добавляем его в запрос
+let orderStatus = {};
+
+let orders = document.querySelectorAll('.page-order__item');
+orders.forEach((order) => {
+    let orderId = order.querySelector('.order-item__info--id');
+    let orderStatusBtn = order.querySelector('.order-item__btn');
+
+    orderStatusBtn.addEventListener('click', () => {
+        if (orderStatusBtn.getAttribute('id') === orderId.innerHTML) {
+            orderStatus.id = orderId.innerHTML;
+            orderStatus.changeStatus = 'change';
+            console.log('id', orderStatus.id);
+        }
+    });
+});
+
+
 const pageOrderList = document.querySelector('.page-order__list');
 if (pageOrderList) {
 
@@ -319,13 +336,29 @@ if (pageOrderList) {
 
             if (status.classList && status.classList.contains('order-item__info--no')) {
                 status.textContent = 'Выполнено';
+                orderStatus['done'] = 1;
             } else {
                 status.textContent = 'Не выполнено';
+                orderStatus['done'] = 0;
             }
+            // console.log(orderStatus);
 
             status.classList.toggle('order-item__info--no');
             status.classList.toggle('order-item__info--yes');
-
+            //Запрос на изменение статуса заказа
+            $.ajax({
+                url: '/server/index.php',
+                type: 'POST',
+                dataType: 'json',
+                data: orderStatus,
+                cache: false,
+                success: function (response) {
+                    console.log('success', response);
+                },
+                error: function (e) {
+                    console.log('error', e);
+                }
+            });
         }
 
     });

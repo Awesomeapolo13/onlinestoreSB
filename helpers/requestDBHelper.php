@@ -34,10 +34,10 @@ function getUserByLogin($login)
  */
 function getProducts()
 {
-    if ($requestAuth = mysqli_query(getConnection(),
+    if ($requestProducts = mysqli_query(getConnection(),
         "select products.id, products.name, products.price, products.img_path as 'imgPath', products.new, products.sale, c.type as 'categoryType' from products
 left join categories c on products.category_id = c.id;")) {
-        return mysqli_fetch_all($requestAuth, MYSQLI_ASSOC);
+        return mysqli_fetch_all($requestProducts, MYSQLI_ASSOC);
     }
 }
 
@@ -46,15 +46,15 @@ left join categories c on products.category_id = c.id;")) {
  */
 function getCategories()
 {
-    if ($requestAuth = mysqli_query(getConnection(),
+    if ($requestCategiries = mysqli_query(getConnection(),
         "select * from categories;")) {
-        return mysqli_fetch_all($requestAuth, MYSQLI_ASSOC);
+        return mysqli_fetch_all($requestCategiries, MYSQLI_ASSOC);
     }
 }
 
 /**Функция - запрос на добавление заказа
- * @param $orderArr
- * @return bool|\mysqli_result
+ * @param $orderArr - массив с информацией о навом заказе
+ * @return bool|\mysqli_result - информация об успешности запроса
  */
 function createOrder($orderArr)
 {
@@ -81,3 +81,29 @@ values ('$name', '$surname', '$patronymic', '$delivery', '$pay', '$comment', '$p
         return $requestCreateOrder;
     }
 }
+
+/**Функция - запрос информации о заказах
+ * @return array - массив информации о заказах
+ */
+function getOrders()
+{
+    if ($requestOrders = mysqli_query(getConnection(),
+        "select * from orders order by done ASC, `timestamp` DESC;")) {
+        return mysqli_fetch_all($requestOrders, MYSQLI_ASSOC);
+    }
+}
+
+/**Функция - запрос на изменение статуса заказа
+ * @param $orderArr - массив с данными для изменения статуса
+ * @return bool|\mysqli_result - информация об успешном завершении запроса
+ */
+function changeStatus($orderArr)
+{
+    $id = mysqli_real_escape_string(getConnection(), $orderArr['id']); // идентификатор заказа
+    $status = mysqli_real_escape_string(getConnection(), $orderArr['done']); // статус заказа
+    if ($requestChangeStatus = mysqli_query(getConnection(),
+        "update orders set done='$status' where id='$id';")) {
+        return $requestChangeStatus;
+    }
+}
+
