@@ -57,6 +57,34 @@ function showContent(array $contentArray, $admin = false)
     include $_SERVER['DOCUMENT_ROOT'] . '/route/index.php';
 }
 
+/**Функция, формирующая масиив категорий внутри массива с информацией о товаре
+ * @param $arr - массив товаров
+ * @return array - массив твоаров, содержащий масиив категорий, к которым этот товар относится
+ */
+function transformProductsArr($arr)
+{
+    $transformedArr = [];
+    $i = 0;
+    foreach ($arr as $elem) {
+
+        if (empty($transformedArr)) {
+            $transformedArr[$i] = $elem;
+            $transformedArr[$i]['categoryTypes'] = [$elem['categoryType']];
+            $transformedArr[$i]['categoryNames'] = [$elem['categoryName']];
+        } elseif ($elem['id'] !== $transformedArr[$i]['id']) {
+            $i++;
+            $transformedArr[$i] = $elem;
+            $transformedArr[$i]['categoryTypes'] = [$elem['categoryType']];
+            $transformedArr[$i]['categoryNames'] = [$elem['categoryName']];
+        } else {
+            $transformedArr[$i]['categoryTypes'][] = $elem['categoryType'];
+            $transformedArr[$i]['categoryNames'][] = $elem['categoryName'];
+        }
+    }
+
+    return $transformedArr;
+}
+
 /**Функция отображения меню
  * @param array $menuArray - массив параммтров для построения меню
  * @param null $auth - признак авторизации (по умолчанию null)
@@ -81,7 +109,7 @@ function filterProducts(array $productsArr, array $filterParamArr)
     $filteredProducts = [];
     foreach ($productsArr as $product) {
         if ($product['price'] >= $filterParamArr['minPrice'] && $product['price'] <= $filterParamArr['maxPrice']) {
-            if (isset($filterParamArr['category']) && $filterParamArr['category'] === $product['categoryType']) {
+            if (isset($filterParamArr['category']) && in_array($filterParamArr['category'], $product['categoryTypes'], true)) {
                 $filteredProducts[] = $product;
             }
             if (isset($filterParamArr['new']) && $filterParamArr['new'] === 'on' && $product['new'] && !in_array($product, $filteredProducts)) {
@@ -105,17 +133,19 @@ function filterProducts(array $productsArr, array $filterParamArr)
  * @param string $filter - значение по которому происзодит фильтрация
  * @return array - отфильтрованный массив
  */
-function queryFilter(array $array, string $field, string $filter)
+function queryFilter(array $array, string $field, string $filter, bool $isArray = false)
 {
     $filteredArr = [];
+
     foreach ($array as $arrElem) {
-        if ($arrElem[$field] === $filter) {
+        if ($arrElem[$field] === $filter || $isArray && in_array($filter, $arrElem[$field])) {
             $filteredArr[] = $arrElem;
         }
         if (!$filter) { //если фильтр не задан включаем все элементы массива
             $filteredArr[] = $arrElem;
         }
     }
+
     return $filteredArr;
 }
 
@@ -180,9 +210,22 @@ function showPaginator(int $pages, int $currentPage)
     }
 }
 
+/**Функция отображения списка заказов
+ * @param $ordersArr - массив с информацией о заказах
+ */
 function showOrders($ordersArr)
 {
     foreach ($ordersArr as $order) {
         include $_SERVER['DOCUMENT_ROOT'] . '/templates/orderItem.php';
+    }
+}
+
+/**Функция отображения списка заказов
+ * @param $productsArr - массив с информацией о продуктах
+ */
+function showAdminProducts($productsArr)
+{
+    foreach ($productsArr as $product) {
+        include $_SERVER['DOCUMENT_ROOT'] . '/templates/adminProduct.php';
     }
 }

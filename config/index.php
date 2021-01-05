@@ -116,3 +116,13 @@ $standardDeliveryPrice = 280;
 $onPurchaseDayDeliveryPrice = 560;
 $deliveryWithFittingPrice = 280;
 $limitFreeDelivery = 2000;
+
+//Путь к папке с изображениями товаров
+$uploadPath = $_SERVER['DOCUMENT_ROOT'] . '/img/products/';
+
+//Массив форматов изображений, которые  разрешены к загрузке
+$imgTypesArr = [
+    'image/jpeg',
+    'image/jpg',
+    'image/png'
+];

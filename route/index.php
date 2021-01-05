@@ -3,13 +3,18 @@
 include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
 //Запросы в БД
 $categories = requestDBHelper\getCategories();
-$products = requestDBHelper\getProducts();
+//$products = requestDBHelper\getProducts();
+$products = pageHelper\transformProductsArr(requestDBHelper\getProducts());
 // Колличество страниц необходимое для отображения товара
 $pages = intdiv(count($products), 9);
 //Текущая страница приложения
 $page = null;
 //Сообщения об ошибках
 $sortErrorMsg = '';
+
+echo "<pre>";
+//var_dump($products);
+echo "</pre>";
 
 if (!empty($_GET)) {
     //Фильтр по цене и типу (новинка, распродажа)
@@ -18,7 +23,7 @@ if (!empty($_GET)) {
     }
     //Фильтр по категориям
     if (isset($_GET['category'])) {
-        $products = pageHelper\queryFilter($products, 'categoryType', $_GET['category']);
+        $products = pageHelper\queryFilter($products, 'categoryTypes', $_GET['category'], true);
     }
     //Фильтр по категориям
     if (isset($_GET['new'])) {
@@ -79,11 +84,11 @@ $page = $_GET['page'] ?? 1;
                 </div>
 
                 <fieldset class="custom-form__group">
-                    <input type="checkbox" name="new" id="new"
-                           class="custom-form__checkbox" <?php if (isset($_GET['new']) && $_GET['new'] === 'on'): ?> checked<?php endif; ?>>
+                    <input type="checkbox" name="new" id="new" value="1"
+                           class="custom-form__checkbox" <?php if (isset($_GET['new']) && $_GET['new'] === '1'): ?> checked<?php endif; ?>>
                     <label for="new" class="custom-form__checkbox-label custom-form__info" style="display: block;">Новинка</label>
-                    <input type="checkbox" name="sale" id="sale"
-                           class="custom-form__checkbox" <?php if (isset($_GET['sale']) && $_GET['sale'] === 'on'): ?> checked<?php endif; ?>>
+                    <input type="checkbox" name="sale" id="sale" value="1"
+                           class="custom-form__checkbox" <?php if (isset($_GET['sale']) && $_GET['sale'] === '1'): ?> checked<?php endif; ?>>
                     <label for="sale" class="custom-form__checkbox-label custom-form__info" style="display: block;">Распродажа</label>
                 </fieldset>
                 <button class="button" type="submit" name="submitFilter" value="submitFilter" style="width: 100%">

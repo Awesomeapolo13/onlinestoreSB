@@ -35,8 +35,10 @@ function getUserByLogin($login)
 function getProducts()
 {
     if ($requestProducts = mysqli_query(getConnection(),
-        "select products.id, products.name, products.price, products.img_path as 'imgPath', products.new, products.sale, c.type as 'categoryType' from products
-left join categories c on products.category_id = c.id;")) {
+        "select products.id, products.name, products.price, products.img_path as 'imgPath', products.new, products.sale, c.name as 'categoryName', c.type as 'categoryType'
+from products
+         left join category_product cp on products.id = cp.product_id
+         left join categories c on cp.category_id = c.id order by products.id;")) {
         return mysqli_fetch_all($requestProducts, MYSQLI_ASSOC);
     }
 }
@@ -107,3 +109,70 @@ function changeStatus($orderArr)
     }
 }
 
+/**Функция - запрос на добавление нового товара
+ * @param $productArr - массив с парамметрами товара
+ * @return bool - результат запроса (true - успешный, false - нет)
+ */
+function addProduct($productArr)
+{
+    $name = mysqli_real_escape_string(getConnection(), $productArr['productName']);
+    $price = mysqli_real_escape_string(getConnection(), $productArr['productPrice']);
+    $path = mysqli_real_escape_string(getConnection(), $productArr['imgPath']);
+    $new = mysqli_real_escape_string(getConnection(), $productArr['new']);
+    $sale = mysqli_real_escape_string(getConnection(), $productArr['sale']);
+    $categoryRequest = 'values';
+    foreach ($productArr['category'] as $category) {
+        $categoryId = mysqli_real_escape_string(getConnection(), $category);
+        $categoryRequest .= " ('$categoryId', last_insert_id()),";
+    }
+    $categoryRequest = substr_replace($categoryRequest, ';', -1);
+    $multiQuery = "insert into products (`name`, price, img_path, `new`, sale) 
+                    values ('$name', '$price', '$path', '$new', '$sale');
+                insert into category_product (category_id, product_id) $categoryRequest";
+    if ($requestAddProduct = mysqli_multi_query(getConnection(),
+        $multiQuery)) {
+        return $requestAddProduct;
+    }
+}
+
+/**Функция - запрос на изменение информации о товаре
+ * @param $productArr - массив с парамметрами товара
+ * @return bool - результат запроса (true - успешный, false - нет)
+ */
+function changeProduct($productArr)
+{
+    $id = mysqli_real_escape_string(getConnection(), $productArr['id']);
+    $name = mysqli_real_escape_string(getConnection(), $productArr['productName']);
+    $price = mysqli_real_escape_string(getConnection(), $productArr['productPrice']);
+    $path = mysqli_real_escape_string(getConnection(), $productArr['imgPath']);
+    $new = mysqli_real_escape_string(getConnection(), $productArr['new']);
+    $sale = mysqli_real_escape_string(getConnection(), $productArr['sale']);
+    $categoryRequest = 'values';
+    foreach ($productArr['category'] as $category) {
+        $categoryId = mysqli_real_escape_string(getConnection(), $category);
+        $categoryRequest .= " ('$categoryId', '$id'),";
+    }
+    $categoryRequest = substr_replace($categoryRequest, ';', -1);
+    $multiQuery = "update products set `name` = '$name', price = '$price', img_path = '$path', `new` = '$new', sale = '$sale' where `id` = '$id';
+                    delete from category_product where product_id = '$id';
+                 insert into category_product (category_id, product_id) $categoryRequest";
+    if ($requestChangeProduct = mysqli_multi_query(getConnection(),
+        $multiQuery)) {
+        return $requestChangeProduct;
+    }
+}
+
+/**Функция - запрос на удаление товара
+ * @param $productId - идентификатор товара
+ * @return bool|\mysqli_result - информация об успешном завершении запроса
+ */
+function deleteProduct($productId)
+{
+    $id = mysqli_real_escape_string(getConnection(), $productId); // идентификатор товара
+    $multiQuery = "delete from products where id='$id';
+                    delete from category_product where product_id = '$id'";
+    if ($requestDeleteProduct = mysqli_multi_query(getConnection(),
+        $multiQuery)) {
+        return $requestDeleteProduct;
+    }
+}

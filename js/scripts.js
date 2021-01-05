@@ -376,6 +376,55 @@ const checkList = (list, btn) => {
     }
 
 };
+
+const pageAdd = document.querySelector('.page-add');
+if (pageAdd) {
+    $(function () {
+        $('#addProductForm').submit(function (e) {
+            e.preventDefault();
+            let formData = new FormData($('#addProductForm')[0]);
+            let image = document.getElementById('productPhoto').files;
+            const hiddenInput = document.getElementById('oldPath');
+            formData.append('productImg', image);
+            //Добавление информации о типе запроса (добаление или изменение)
+            if (hiddenInput) {
+                formData.append('changeProduct', 'yes');
+            } else {
+                formData.append('addProduct', 'yes');
+            }
+            $.ajax({
+                url: '/server/index.php',
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                data: formData,
+                cache: false,
+                success: function (response) {
+                    console.log('success', response);
+                    if (response.error) {
+                        $('.error').text(response.message);
+                    } else {
+                        const form = document.querySelector('.custom-form');
+                        const popupEnd = document.querySelector('.page-add__popup-end');
+                        form.hidden = true;
+                        popupEnd.hidden = false;
+                    }
+                },
+                error: function (e) {
+                    console.log('error', e);
+                    if (e) {
+                        $('.error').text('Возникла ошибка при добавлении/изменении новго товара. Попробуйте позднее');
+                    }
+                }
+            });
+
+        })
+    })
+
+}
+
+
 const addList = document.querySelector('.add-list');
 if (addList) {
 
@@ -383,7 +432,7 @@ if (addList) {
     labelHidden(form);
 
     const addButton = addList.querySelector('.add-list__item--add');
-    const addInput = addList.querySelector('#product-photo');
+    const addInput = addList.querySelector('#productPhoto');
 
     checkList(addList, addButton);
 
@@ -412,33 +461,91 @@ if (addList) {
         reader.readAsDataURL(file);
 
     });
-
+    //Изменение/добавление товара
     const button = document.querySelector('.button');
     const popupEnd = document.querySelector('.page-add__popup-end');
 
-    button.addEventListener('click', (evt) => {
-
-        evt.preventDefault();
-
-        form.hidden = true;
-        popupEnd.hidden = false;
-
-    })
+    // button.addEventListener('click', (evt) => {
+    //
+    //     evt.preventDefault();
+    //
+    //     form.hidden = true;
+    //     popupEnd.hidden = false;
+    //
+    // })
 
 }
+
+//Запрос на удаление товара
+
+
+const productsPage = document.querySelector('.page-products');
+if (productsPage) {
+    const errorSpan = document.querySelector('.error');
+    let deleteProductObj = {};
+    let adminProductsList = document.querySelectorAll('.page-products__item');
+    adminProductsList.forEach((product) => {
+        let productsId = product.querySelectorAll('.product-item__field');
+        let productId = '';
+
+        productsId.forEach((field) => {
+            if (field.getAttribute('id') === 'productId') {
+                productId = field.innerHTML;
+            }
+        });
+
+        let deleteProductBtn = product.querySelector('.product-item__delete');
+
+        deleteProductBtn.addEventListener('click', (evt) => {
+            if (deleteProductBtn.getAttribute('id') === productId) {
+                deleteProductObj.id = productId;
+                deleteProductObj.deleteProduct = 'delete';
+                console.log(deleteProductObj);
+                //Запрос на удаление товара
+                $.ajax({
+                    url: '/server/index.php',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: deleteProductObj,
+                    cache: false,
+                    success: function (response) {
+                        console.log('success', response);
+                        if (response.error) {
+
+                            errorSpan.textContent = response.message;
+
+                        } else {
+                            errorSpan.textContent = '';
+                            const target = evt.target;
+                            if (target.classList && target.classList.contains('product-item__delete')) {
+
+                                productsList.removeChild(target.parentElement);
+
+                            }
+                        }
+                    },
+                    error: function (e) {
+                        console.log('error', e);
+                    }
+                });
+            }
+        });
+    });
+}
+
+
 
 const productsList = document.querySelector('.page-products__list');
 if (productsList) {
 
     productsList.addEventListener('click', evt => {
 
-        const target = evt.target;
-
-        if (target.classList && target.classList.contains('product-item__delete')) {
-
-            productsList.removeChild(target.parentElement);
-
-        }
+        // const target = evt.target;
+        // if (target.classList && target.classList.contains('product-item__delete')) {
+        //
+        //     productsList.removeChild(target.parentElement);
+        //
+        // }
 
     });
 

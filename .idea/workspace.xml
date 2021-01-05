@@ -26,16 +26,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6c890b75-26df-4b07-9a0f-448bd05382be" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/orderItem.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/adminProduct.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/selectCategories.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/522bb0ce-99de-465e-bfdb-b6698640dec5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/522bb0ce-99de-465e-bfdb-b6698640dec5.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/orders.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/orders.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/add.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/add.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/products.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/products.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/helpers/pageHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/pageHelper.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/helpers/requestDBHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/requestDBHelper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helpers/validateHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/validateHelper.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/scripts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/route/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/route/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +128,22 @@
       <workItem from="1608455009576" duration="22940000" />
       <workItem from="1608565463030" duration="10029000" />
       <workItem from="1608620199962" duration="18554000" />
-      <workItem from="1608725140493" duration="1042000" />
+      <workItem from="1608725140493" duration="9563000" />
+      <workItem from="1608790573187" duration="12349000" />
+      <workItem from="1608897207573" duration="6836000" />
+      <workItem from="1608977207863" duration="601000" />
+      <workItem from="1609021225536" duration="3000" />
+      <workItem from="1609060353366" duration="8947000" />
+      <workItem from="1609171180783" duration="6875000" />
+      <workItem from="1609256954005" duration="5144000" />
+      <workItem from="1609514012221" duration="44000" />
+      <workItem from="1609514150649" duration="14021000" />
+      <workItem from="1609592553018" duration="17917000" />
+      <workItem from="1609665359794" duration="17915000" />
+      <workItem from="1609708898967" duration="5497000" />
+      <workItem from="1609752985953" duration="9223000" />
+      <workItem from="1609803720515" duration="6000" />
+      <workItem from="1609854096357" duration="11230000" />
     </task>
     <servers />
   </component>
