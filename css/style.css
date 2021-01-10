@@ -489,6 +489,9 @@ a {
     margin-bottom: 50px; }
   .shop__item:not(:nth-child(3n)) {
     margin-right: 30px; }
+/*.shop__paginator li {*/
+/*    display: inline;*/
+/*  }*/
 
 .shop-page {
   display: flex;
@@ -587,7 +590,7 @@ a {
   margin: 0;
   padding: 0;
   list-style: none;
-  display: flex; }
+  display: flex;}
   .paginator li:not(:last-child) {
     margin-right: 10px; }
   .paginator__item {
@@ -920,3 +923,7 @@ a {
     .order-item__toggle--active {
       -webkit-transform: rotate(180deg);
               transform: rotate(180deg); }
+
+.error {
+  color: #dc1414;
+}

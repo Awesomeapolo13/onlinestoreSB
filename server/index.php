@@ -4,12 +4,10 @@ include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/helpers/validateHelper.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/helpers/requestDBHelper.php';;
 
-//var_dump(empty('Привет') ? $city = null : $city = 'привет');
-
 if (!empty($_POST)) {
 
     //Отправление заказа
-    if (isset($_POST['send_order']) && $_POST['send_order']) {
+    if (isset($_POST['sendOrder']) && $_POST['sendOrder']) {
 
         $message = 'Ваш заказ успешно оформлен, с вами свяжутся в ближайшее время';
         $requestError = false;
@@ -23,7 +21,7 @@ if (!empty($_POST)) {
                 $_POST['orderPrice'] = $_POST['productPrice']
                 :
                 $_POST['orderPrice'] = $_POST['productPrice'] + $standardDeliveryPrice;
-
+            //Запрос на добавление заказа
             requestDBHelper\createOrder($_POST);
         }
 

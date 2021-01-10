@@ -3,18 +3,13 @@
 include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
 //Запросы в БД
 $categories = requestDBHelper\getCategories();
-//$products = requestDBHelper\getProducts();
 $products = pageHelper\transformProductsArr(requestDBHelper\getProducts());
-// Колличество страниц необходимое для отображения товара
-$pages = intdiv(count($products), 9);
+
+
 //Текущая страница приложения
 $page = null;
 //Сообщения об ошибках
 $sortErrorMsg = '';
-
-echo "<pre>";
-//var_dump($products);
-echo "</pre>";
 
 if (!empty($_GET)) {
     //Фильтр по цене и типу (новинка, распродажа)
@@ -37,19 +32,19 @@ if (!empty($_GET)) {
     if (isset($_GET['sortCategory']) && isset($_GET['orderCategory'])) {
         $products = pageHelper\sortProducts($products, $_GET['sortCategory'], $_GET['orderCategory']);
         $sortErrorMsg = '';
-//        var_dump($products);
     } elseif (isset($_GET['sortCategory'])) {
         $sortErrorMsg = 'Выберите параметр для сортировки';
     } elseif (isset($_GET['orderCategory'])) {
         $sortErrorMsg = 'Выберите параметр порядок сортировки';
     }
 }
+
+// Колличество страниц необходимое для отображения товара
+$pages = ceil(count($products) / 9);
 //Определение номера текущей страницы
 $page = $_GET['page'] ?? 1;
-
-//var_dump($_GET);
-//var_dump(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) . '?' . parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
 ?>
+
 <main class="shop-page">
     <header class="intro">
         <div class="intro__wrapper">
@@ -73,10 +68,10 @@ $page = $_GET['page'] ?? 1;
                         <span class="range__info">Цена</span>
                         <div class="range__line" aria-label="Range Line"></div>
                         <div class="range__res">
-                            <span class="range__res-item min-price">350 руб.</span>
+                            <span class="range__res-item min-price"><?= isset($_GET['minPrice']) ? htmlspecialchars($_GET['minPrice']) : '350' ?> руб.</span>
                             <input type="hidden" class="input_min_price" name="minPrice"
                                    value="<?= isset($_GET['minPrice']) ? htmlspecialchars($_GET['minPrice']) : '350' ?>">
-                            <span class="range__res-item max-price">32 000 руб.</span>
+                            <span class="range__res-item max-price"><?= isset($_GET['maxPrice']) ? htmlspecialchars($_GET['maxPrice']) : '32000' ?> руб.</span>
                             <input type="hidden" class="input_max_price" name="maxPrice"
                                    value="<?= isset($_GET['maxPrice']) ? htmlspecialchars($_GET['maxPrice']) : '32000' ?>">
                         </div>
@@ -100,8 +95,7 @@ $page = $_GET['page'] ?? 1;
         <div class="shop__wrapper">
             <section class="shop__sorting">
                 <div class="shop__sorting-item custom-form__select-wrapper">
-                    <select class="custom-form__select" name="sortCategory" form="filterForm"
-                            onchange="getSortParams()">
+                    <select class="custom-form__select" name="sortCategory" form="filterForm">
                         <option hidden="" value="null">Сортировка</option>
                         <option value="price"
                                 <?php if (isset($_GET['sortCategory']) && $_GET['sortCategory'] === 'price'): ?>selected<?php endif; ?>>
@@ -114,8 +108,7 @@ $page = $_GET['page'] ?? 1;
                     </select>
                 </div>
                 <div class="shop__sorting-item custom-form__select-wrapper">
-                    <select class="custom-form__select" name="orderCategory" form="filterForm"
-                            onchange="getOrderParams()">
+                    <select class="custom-form__select" name="orderCategory" form="filterForm">
                         <option hidden="" value="null">Порядок</option>
                         <option value="<?= SORT_ASC ?>"
                                 <?php if (isset($_GET['orderCategory']) && $_GET['orderCategory'] == SORT_ASC): ?>selected<?php endif; ?>>
@@ -140,7 +133,7 @@ $page = $_GET['page'] ?? 1;
     <section class="shop-page__order" hidden="">
         <div class="shop-page__wrapper">
             <h2 class="h h--1">Оформление заказа</h2>
-            <form action="#" method="post" class="custom-form js-order">
+            <form id="addOrderForm" action="#" method="post" class="custom-form js-order">
                 <fieldset class="custom-form__group">
                     <legend class="custom-form__title">Укажите свои личные данные</legend>
                     <p class="custom-form__info">
@@ -238,11 +231,12 @@ $page = $_GET['page'] ?? 1;
                     <legend class="custom-form__title custom-form__title--comment">Комментарии к заказу</legend>
                     <textarea class="custom-form__textarea" name="comment"></textarea>
                 </fieldset>
+                <!--             Информация о цене и идентификаторе товара-->
                 <input type="hidden" class="productId" name="productId" value="">
-                <input type="hidden" class="price" name="price" value="">
+                <input type="hidden" class="price" name="productPrice" value="">
                 <p class="server-form-error"></p>
-                <button class="button" type="button" name="send_order" value="true">Отправить заказ</button>
-                <p class="error">Заполните все обязательные поля</p>
+                <button class="button" type="submit" name="sendOrder" value="true">Отправить заказ</button>
+                <p class="error" hidden>Заполните все обязательные поля</p>
             </form>
         </div>
     </section>

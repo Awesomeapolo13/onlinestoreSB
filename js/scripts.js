@@ -103,28 +103,134 @@ if (filterWrapper) {
 
 }
 
-//Выделение цены и идентификатора товара
 
-let productId = null; //идентификатор товара
-let productPrice = null; //цена товара
+//Оформление заказа
+const shopPage = document.querySelector('.shop-page');
+if (shopPage) {
 
+    let productId = null; //идентификатор товара
+    let productPrice = null; //цена товара
 
-let products = document.querySelectorAll('.shop__item');
-for (let product of products) {
+    //Выделяем идентификатор товара и его цену
+    let products = document.querySelectorAll('.shop__item');
+    for (let product of products) {
 
-    product.addEventListener('click', () => {
+        product.addEventListener('click', () => {
 
-        for (let elem of product.childNodes) {
-            if (elem.tagName === 'INPUT' && elem.getAttribute('class') === 'productId') {
-                productId = elem.value;
-                console.log(productId);
+            for (let elem of product.childNodes) {
+                if (elem.tagName === 'INPUT' && elem.getAttribute('class') === 'productId') {
+                    productId = elem.value;
+                }
+                if (elem.tagName === 'INPUT' && elem.getAttribute('class') === 'price') {
+                    productPrice = elem.value;
+                }
             }
-            if (elem.tagName === 'INPUT' && elem.getAttribute('class') === 'price') {
-                productPrice = elem.value;
-                console.log(productPrice);
+        });
+
+    }
+
+    // Влидация и отправление заказа
+    $(function () {
+        $('#addOrderForm').submit(function (e) {
+            e.preventDefault();
+            let orderData = new FormData($('#addOrderForm')[0]);
+            orderData.append('sendOrder', 'true');
+            orderData.set('productId', productId);
+            orderData.set('productPrice', productPrice);
+
+            //Элемент с сообщением об ошибке валидации от сервера
+            const serverError = document.querySelector('.error');
+            const shopOrder = document.querySelector('.shop-page__order');
+            //Сообщение об успешном оформлении заказа
+            const popupEnd = document.querySelector('.shop-page__popup-end');
+
+            //Валидация обязательных полей формы
+            shopOrder.querySelector('.custom-form').noValidate = true;
+
+            //Текстовые поля обязательные для заполнения
+            const inputs = Array.from(shopOrder.querySelectorAll('[required]'));
+            let isValidForm = false;
+
+            //Валидация текстовых полей
+            inputs.forEach(inp => {
+
+                if (!!inp.value) {
+
+                    if (inp.classList.contains('custom-form__input--error')) {
+                        inp.classList.remove('custom-form__input--error');
+                    }
+                    isValidForm = true;
+
+                } else {
+
+                    inp.classList.add('custom-form__input--error');
+                    isValidForm = false
+                    window.scroll(0, 0);
+                }
+            });
+
+            if (!isValidForm) {
+                serverError.textContent = 'Для оформления заказа необходимо заполнить все обязательные поля';
+                serverError.hidden = false;
+            } else {
+
+                //Направить запрос в случае успешной валидации
+                $.ajax({
+                    url: '/server/index.php',
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    data: orderData,
+                    cache: false,
+                    success: function (response) {
+                        // console.log('success', response);
+                        const serverSuccess = document.querySelector('.shop-page__end-message');
+
+                        if (response.error) {
+                            serverError.textContent = response.message;
+                            serverError.hidden = false;
+                        } else {
+                            serverError.hidden = true;
+                            serverSuccess.textContent = response.message;
+
+                            toggleHidden(shopOrder, popupEnd);
+
+                            popupEnd.classList.add('fade');
+                            setTimeout(() => popupEnd.classList.remove('fade'), 1000);
+
+                            window.scroll(0, 0);
+
+                            const buttonEnd = popupEnd.querySelector('.button');
+
+                            buttonEnd.addEventListener('click', () => {
+
+                                popupEnd.classList.add('fade-reverse');
+
+                                setTimeout(() => {
+
+                                    popupEnd.classList.remove('fade-reverse');
+
+                                    toggleHidden(popupEnd, document.querySelector('.intro'), document.querySelector('.shop'));
+
+                                }, 1000);
+
+                            });
+                        }
+                    },
+                    error: function (e) {
+                        console.log('error', e);
+                        if (e) {
+                            $('.error').text('Возникла ошибка при добавлении/изменении новго товара. Попробуйте позднее');
+                        }
+                    }
+                });
             }
-        }
+
+
+        })
     })
+
 }
 
 //Перечень товаров и форма оформления заказа
@@ -152,140 +258,6 @@ if (shopList) {
             labelHidden(form);
 
             toggleDelivery(shopOrder);
-
-
-            //радионопки
-            const radios = Array.from(shopOrder.querySelectorAll('.custom-form__radio'));
-            let orderData = {};//объект с данными формы
-            //запись данных из радио-кнопок
-
-            radios.forEach(radio => {
-                radio.addEventListener('change', () => {
-                    console.log('чекд', radio.checked);
-                    if (radio.checked) {
-                        console.log(radio.getAttribute('name'));
-                        orderData[radio.getAttribute('name')] = radio.value;
-                    }
-                });
-            });
-
-
-            const buttonOrder = shopOrder.querySelector('.button');
-            const popupEnd = document.querySelector('.shop-page__popup-end');
-
-            buttonOrder.addEventListener('click', (evt) => {
-
-                form.noValidate = true;
-
-                const inputs = Array.from(shopOrder.querySelectorAll('[required]'));
-
-                let isValidForm = false;
-
-
-                inputs.forEach(inp => {
-
-                    if (!!inp.value) {
-
-                        if (inp.classList.contains('custom-form__input--error')) {
-                            inp.classList.remove('custom-form__input--error');
-                        }
-                        isValidForm = true;
-
-                    } else {
-
-                        inp.classList.add('custom-form__input--error');
-                        isValidForm = false
-                    }
-                });
-
-                let requestError = false;
-                //В случае успешной валидации направить ajax запрос
-                if (isValidForm) {
-
-
-                    //запись данных из обязательных полей
-                    inputs.forEach(inp => {
-                        // console.log(inp.getAttribute('name'));
-                        orderData[inp.getAttribute('name')] = inp.value;
-                    });
-                    //запись данных из полей отчества
-                    const patronymic = document.getElementById('thirdName');
-                    orderData[patronymic.getAttribute('name')] = patronymic.value;
-
-
-                    //добавляем значения цены и идентификатора товара
-                    orderData['productId'] = productId;
-                    orderData['productPrice'] = productPrice;
-
-                    //запись данных из textarea
-                    const commentArea = document.querySelector('.custom-form__textarea');
-                    orderData[commentArea.getAttribute('name')] = commentArea.value;
-
-                    //запись данных кнопки
-                    orderData[buttonOrder.getAttribute('name')] = buttonOrder.value;
-                    console.log(orderData);
-
-
-                    $.ajax({
-                        url: '/server/index.php',
-                        type: 'POST',
-                        dataType: 'json',
-                        data: orderData,
-                        cache: false,
-                        success: function (response) {
-                            console.log('success', response);
-                            const serverSuccess = document.querySelector('.shop-page__end-message');
-
-                            if (response.error) {
-                                serverError.textContent = response.message;
-                                requestError = response.error;
-                            } else {
-                                serverSuccess.textContent = response.message;
-                            }
-                        },
-                        error: function (e) {
-                            console.log('error', e);
-                            requestError = true;
-                            serverError.textContent = 'Заполните все обязательные поля';
-                        }
-                    });
-                }
-
-                const serverError = document.querySelector('.error');
-
-                if (inputs.every(inp => !!inp.value) && !requestError) {
-
-                    evt.preventDefault();
-
-                    toggleHidden(shopOrder, popupEnd);
-
-                    popupEnd.classList.add('fade');
-                    setTimeout(() => popupEnd.classList.remove('fade'), 1000);
-
-                    window.scroll(0, 0);
-
-                    const buttonEnd = popupEnd.querySelector('.button');
-
-                    buttonEnd.addEventListener('click', () => {
-
-
-                        popupEnd.classList.add('fade-reverse');
-
-                        setTimeout(() => {
-
-                            popupEnd.classList.remove('fade-reverse');
-
-                            toggleHidden(popupEnd, document.querySelector('.intro'), document.querySelector('.shop'));
-
-                        }, 1000);
-
-                    });
-
-                } else {
-                    window.scroll(0, 0);
-                    evt.preventDefault();
-                }
-            });
         }
     });
 }
@@ -341,7 +313,6 @@ if (pageOrderList) {
                 status.textContent = 'Не выполнено';
                 orderStatus['done'] = 0;
             }
-            // console.log(orderStatus);
 
             status.classList.toggle('order-item__info--no');
             status.classList.toggle('order-item__info--yes');
@@ -353,7 +324,7 @@ if (pageOrderList) {
                 data: orderStatus,
                 cache: false,
                 success: function (response) {
-                    console.log('success', response);
+                    // console.log('success', response);
                 },
                 error: function (e) {
                     console.log('error', e);
@@ -377,6 +348,7 @@ const checkList = (list, btn) => {
 
 };
 
+//Запрос на добаление/изменение товара
 const pageAdd = document.querySelector('.page-add');
 if (pageAdd) {
     $(function () {
@@ -401,7 +373,7 @@ if (pageAdd) {
                 data: formData,
                 cache: false,
                 success: function (response) {
-                    console.log('success', response);
+                    // console.log('success', response);
                     if (response.error) {
                         $('.error').text(response.message);
                     } else {
@@ -461,24 +433,9 @@ if (addList) {
         reader.readAsDataURL(file);
 
     });
-    //Изменение/добавление товара
-    const button = document.querySelector('.button');
-    const popupEnd = document.querySelector('.page-add__popup-end');
-
-    // button.addEventListener('click', (evt) => {
-    //
-    //     evt.preventDefault();
-    //
-    //     form.hidden = true;
-    //     popupEnd.hidden = false;
-    //
-    // })
-
 }
 
 //Запрос на удаление товара
-
-
 const productsPage = document.querySelector('.page-products');
 if (productsPage) {
     const errorSpan = document.querySelector('.error');
@@ -509,7 +466,7 @@ if (productsPage) {
                     data: deleteProductObj,
                     cache: false,
                     success: function (response) {
-                        console.log('success', response);
+                        // console.log('success', response);
                         if (response.error) {
 
                             errorSpan.textContent = response.message;
@@ -517,6 +474,7 @@ if (productsPage) {
                         } else {
                             errorSpan.textContent = '';
                             const target = evt.target;
+                            const productsList = document.querySelector('.page-products__list');
                             if (target.classList && target.classList.contains('product-item__delete')) {
 
                                 productsList.removeChild(target.parentElement);
@@ -533,24 +491,6 @@ if (productsPage) {
     });
 }
 
-
-
-const productsList = document.querySelector('.page-products__list');
-if (productsList) {
-
-    productsList.addEventListener('click', evt => {
-
-        // const target = evt.target;
-        // if (target.classList && target.classList.contains('product-item__delete')) {
-        //
-        //     productsList.removeChild(target.parentElement);
-        //
-        // }
-
-    });
-
-}
-
 let minPrice = '';
 let maxPrice = '';
 
@@ -560,12 +500,12 @@ if (document.querySelector('.shop-page')) {
     $('.range__line').slider({
         min: 350,
         max: 32000,
-        values: [350, 32000],
+        values: [minPrice ? minPrice : 350, maxPrice ? maxPrice : 32000],
         range: true,
         stop: function (event, ui) {
 
-            $('.min-price').text($('.range__line').slider('values', 0) + ' руб.');
-            $('.max-price').text($('.range__line').slider('values', 1) + ' руб.');
+            $('.min-price').text((minPrice ? minPrice : $('.range__line').slider('values', 0)) + ' руб.');
+            $('.max-price').text((maxPrice ? maxPrice : $('.range__line').slider('values', 1)) + ' руб.');
             minPrice = $('.input_min_price').val($('.range__line').slider('values', 0));
             maxPrice = $('.input_max_price').val($('.range__line').slider('values', 1));
         },
@@ -577,48 +517,3 @@ if (document.querySelector('.shop-page')) {
     });
 
 }
-
-let productSortSelectors = document.querySelectorAll('.custom-form__select');
-let productSortType = productSortSelectors[0];
-let productOrderType = productSortSelectors[1];
-
-// productSortType.addEventListener('select', getSortParams());
-// productOrderType.addEventListener('select', getOrderParams());
-
-function getSortParams() {
-    console.log('sort');
-    $.ajax({
-        url: "/",
-        type: "get", //send it through get method
-        data: {
-            sortCategory: productSortType.value,
-        },
-        success: function (response) {
-            console.log('success sort');
-            // location.reload();
-        },
-        error: function (xhr) {
-            //Do Something to handle error
-        }
-    });
-}
-
-function getOrderParams() {
-    console.log('order');
-    $.ajax({
-        url: "/",
-        type: "get", //send it through get method
-        data: {
-            prices: productOrderType.value,
-        },
-        success: function (response) {
-            console.log('success order');
-        },
-        error: function (xhr) {
-            console.log(xhr);
-        }
-    });
-}
-
-
-// let sortSelect = document.querySelector('.')

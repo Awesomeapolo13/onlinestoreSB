@@ -1,5 +1,15 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
+
+//Редирект пользователя, который не является администратором на главную страницу
+if (!isset($_SESSION['admin'])) {
+    header("Location: /"); //Редирект для пользователей не подходящих под признак
+} else {
+    if (isset($_SESSION['login'])) {
+        setcookie('login', $_COOKIE['login'], time() + 43200, '/');
+    }
+}
+
 $categories = requestDBHelper\getCategories();
 ?>
 <main class="page-add">

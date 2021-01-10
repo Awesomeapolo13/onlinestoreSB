@@ -1,9 +1,8 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
 
+//Перечень продуктов
 $products = pageHelper\transformProductsArr(requestDBHelper\getProducts());
-
-//var_dump($products);
 ?>
 <main class="page-products">
     <h1 class="h h--1">Товары</h1>

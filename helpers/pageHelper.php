@@ -18,6 +18,22 @@ function isCurrentURL($url, $query = false)
     }
 }
 
+/**Функция проверки наличия доступа у пользователя к странице
+ * @param $authAttribute - атрибут авторизации или иного признак, который требует проверки
+ * @param $url - путь к странице для которой делается проверка
+ * @param $redirectPath - страница, на которую делается редирект
+ */
+function isAuth($authAttribute, $url, $redirectPath)
+{
+    if (!$authAttribute && isCurrentURL($url)) {
+        header("Location: $redirectPath"); //Редирект для пользователей не подходящих под признак
+    } else {
+        if (isset($_SESSION['login'])) {
+            setcookie('login', $_COOKIE['login'], time() + 43200, '/');
+        }
+    }
+}
+
 /**Функция отображения заголовка в теге title
  * @param array $titleArray - массив заголовков
  * @return mixed|string - заголовок для страницы в соответствии с переданным массивом
@@ -131,6 +147,7 @@ function filterProducts(array $productsArr, array $filterParamArr)
  * @param array $array - фильтруемый массив
  * @param string $field - ключь массива по которому нужно его отфильтровать
  * @param string $filter - значение по которому происзодит фильтрация
+ * @param bool $isArray - является ли поле ключем массива
  * @return array - отфильтрованный массив
  */
 function queryFilter(array $array, string $field, string $filter, bool $isArray = false)
@@ -184,12 +201,22 @@ function showProducts(array $productsArr, int $pages, $currentPage = 1)
         $limit = count($productsArr);
     }
 
-    $productPage = []; //массив из товаров входящих в одну страницу
     $productPages = []; //массив страниц с товарами
+    $currentItem = 0; //индекс товара в массиве товаров
     for ($i = 1; $i <= $pages; $i++) {
-        for ($j = 0; $j <= $limit - 1; $j++) {
-            $productPage[] = $productsArr[$j]; //записываем в массив страницы товары, которые будут на ней отображаться
+        $productPage = []; //массив из товаров входящих в одну страницу
+        for (; $currentItem <= $productsCount - 1; $currentItem++) {
+            if ($currentItem <= $limit - 1) {
+                $productPage[] = $productsArr[$currentItem]; //записываем в массив страницы товары, которые будут на ней отображаться
+            } else {
+                //Если число товаров превышает предел на странице то увеличиваем его для отображения последующих
+                // и разрываем цикл для перехода к следующей странице
+                $limit += 9;
+                break;
+            }
+//            var_dump($j);
         }
+//        var_dump($i);
         $productPages[$i] = $productPage; //добавляем страницу в массив страниц
     }
     //вывод контента определнной страницы
@@ -204,10 +231,15 @@ function showProducts(array $productsArr, int $pages, $currentPage = 1)
  */
 function showPaginator(int $pages, int $currentPage)
 {
+    $changedPageParams = '';
     $productsParams = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-    for ($page = 1; $page <= $pages; $page++) {
-        include $_SERVER['DOCUMENT_ROOT'] . '/templates/paginator.php';
+    $prevPage = preg_match('/page=(.*?)&/', $productsParams, $match);
+    if (isset($match[1])) {
+        $changedPageParams = str_replace("page=$match[1]&", '', $productsParams);
+    } else {
+        $changedPageParams = str_replace("page=$prevPage&", '', $productsParams);
     }
+    include $_SERVER['DOCUMENT_ROOT'] . '/templates/paginator.php';
 }
 
 /**Функция отображения списка заказов

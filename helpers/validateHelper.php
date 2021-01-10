@@ -9,7 +9,7 @@ namespace validateHelper;
 function validNewOrder($orderArray)
 {
     if (empty($orderArray['name']) || empty($orderArray['surname']) || empty($orderArray['email']) || empty($orderArray['phone'])
-        || empty($orderArray['delivery']) || empty($orderArray['pay'])) {
+        || empty($orderArray['delivery']) || empty($orderArray['pay']) || empty($orderArray['productPrice']) || empty($orderArray['productId'])) {
         return false;
     }
     if ($orderArray['delivery'] === 'dev-yes' && (empty($orderArray['city']) || empty($orderArray['street']) || empty($orderArray['home'])

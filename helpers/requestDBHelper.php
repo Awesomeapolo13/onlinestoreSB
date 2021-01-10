@@ -19,13 +19,27 @@ function getConnection()
  * @param $login - адрес электронной почты пользователя (логин), для которого делается запрос
  * @return array - массив, содержащий пароль и электронную почту пользователя
  */
-
 function getUserByLogin($login)
 {
     $loginMySQL = mysqli_real_escape_string(getConnection(), $login);
     if ($requestAuth = mysqli_query(getConnection(),
-        "select email, password from users where email='$loginMySQL'")) {
+        "select id, email, password from users where email='$loginMySQL'")) {
         return mysqli_fetch_all($requestAuth, MYSQLI_ASSOC);
+    }
+}
+
+/**
+ * @param $id
+ * @return array
+ */
+function getUserGroup($id)
+{
+    $idMySQL = mysqli_real_escape_string(getConnection(), $id);
+    if ($requestGroups = mysqli_query(getConnection(),
+        "select `groups`.name as 'groupName' from users
+                left join group_user on users.id = group_user.user_id
+                left join `groups` on group_user.group_id = `groups`.id where users.id = '$idMySQL';")) {
+        return mysqli_fetch_all($requestGroups, MYSQLI_ASSOC);
     }
 }
 
@@ -60,10 +74,9 @@ function getCategories()
  */
 function createOrder($orderArr)
 {
-    $requestString = "";
     $name = mysqli_real_escape_string(getConnection(), $orderArr['name']); // имя заказчика
     $surname = mysqli_real_escape_string(getConnection(), $orderArr['surname']); // фамилия заказчика
-    empty($orderArr['patronymic']) ? $patronymic = null : $patronymic = mysqli_real_escape_string(getConnection(), $orderArr['patronymic']); // отчество заказчика
+    empty($orderArr['patronymic']) ? $patronymic = 'NULL' : $patronymic = mysqli_real_escape_string(getConnection(), $orderArr['patronymic']); // отчество заказчика
     $delivery = mysqli_real_escape_string(getConnection(), $orderArr['delivery']); // тип доставки
     $pay = mysqli_real_escape_string(getConnection(), $orderArr['pay']); // способ оплаты
     $comment = mysqli_real_escape_string(getConnection(), $orderArr['comment']); // тклкфон заказчика

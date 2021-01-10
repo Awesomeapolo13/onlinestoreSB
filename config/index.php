@@ -4,7 +4,6 @@
 $dbHost = 'localhost';
 $dbUser = 'root';
 $dbPassword = 'root';
-//$dsn = 'root:host=localhost;date=onlinestoredb';
 $dbName = 'onlinestoredb';
 
 
@@ -63,21 +62,27 @@ $menuArray = [
         'admin' => false,
     ],
     [
+        'title' => 'Войти',
+        'path' => '/authorization',
+        'sort' => 4,
+        'admin' => false,
+    ],
+    [
         'title' => 'Товары',
         'path' => '/admin/products',
-        'sort' => 4,
+        'sort' => 5,
         'admin' => true,
     ],
     [
         'title' => 'Заказы',
         'path' => '/admin/orders',
-        'sort' => 5,
+        'sort' => 6,
         'admin' => true,
     ],
     [
         'title' => 'Выйти',
         'path' => '/?login=out',
-        'sort' => 6,
+        'sort' => 7,
         'admin' => true,
     ],
 ];
@@ -125,4 +130,10 @@ $imgTypesArr = [
     'image/jpeg',
     'image/jpg',
     'image/png'
+];
+
+//Ассоциативный массив групп пользователей
+$groups = [
+    'Оператор' => 'operator',
+    'Администратор' => 'admin',
 ];
