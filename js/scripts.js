@@ -184,7 +184,7 @@ if (shopPage) {
                     data: orderData,
                     cache: false,
                     success: function (response) {
-                        // console.log('success', response);
+                        console.log('success', response);
                         const serverSuccess = document.querySelector('.shop-page__end-message');
 
                         if (response.error) {
@@ -212,22 +212,20 @@ if (shopPage) {
                                     popupEnd.classList.remove('fade-reverse');
 
                                     toggleHidden(popupEnd, document.querySelector('.intro'), document.querySelector('.shop'));
+                                    location.reload();
 
                                 }, 1000);
-
                             });
                         }
                     },
                     error: function (e) {
                         console.log('error', e);
                         if (e) {
-                            $('.error').text('Возникла ошибка при добавлении/изменении новго товара. Попробуйте позднее');
+                            $('.error').text('Возникла ошибка при оформлении заказа. Пожалуйста попробуйте позднее.');
                         }
                     }
                 });
             }
-
-
         })
     })
 
@@ -243,7 +241,6 @@ if (shopList) {
 
 
         if (prod.some(pathItem => pathItem.classList && pathItem.classList.contains('shop__item'))) {
-
 
             const shopOrder = document.querySelector('.shop-page__order');
 
@@ -262,79 +259,113 @@ if (shopList) {
     });
 }
 
-//определяем id заказа, на котором был сделан клик и добавляем его в запрос
-let orderStatus = {};
+//Изменение статуса заказа (выполнен/не выполнен)
+const ordersPage = document.querySelector('.page-order');
+if (ordersPage) {
+    const adminInput = document.getElementById('isAdmin');
+    const operatorInput = document.getElementById('isOperator');
+    let errorWrapper = null;
+    let errorMsg = null;
+    let orderStatus = {};
 
-let orders = document.querySelectorAll('.page-order__item');
-orders.forEach((order) => {
-    let orderId = order.querySelector('.order-item__info--id');
-    let orderStatusBtn = order.querySelector('.order-item__btn');
+    if (adminInput) {
+        orderStatus.admin = adminInput.value;
+    }
 
-    orderStatusBtn.addEventListener('click', () => {
-        if (orderStatusBtn.getAttribute('id') === orderId.innerHTML) {
-            orderStatus.id = orderId.innerHTML;
-            orderStatus.changeStatus = 'change';
-            console.log('id', orderStatus.id);
-        }
-    });
-});
+    if (operatorInput) {
+        orderStatus.operator = operatorInput.value;
+    }
 
+    //Определение id заказа, у которого изменяется
+    let orders = document.querySelectorAll('.page-order__item');
+    orders.forEach((order) => {
+        let orderId = order.querySelector('.order-item__info--id');
+        let orderStatusBtn = order.querySelector('.order-item__btn');
+        let statusInput = order.querySelector('.statusInput');
 
-const pageOrderList = document.querySelector('.page-order__list');
-if (pageOrderList) {
-
-    pageOrderList.addEventListener('click', evt => {
-
-
-        if (evt.target.classList && evt.target.classList.contains('order-item__toggle')) {
-            var path = evt.path || (evt.composedPath && evt.composedPath());
-            Array.from(path).forEach(element => {
-
-                if (element.classList && element.classList.contains('page-order__item')) {
-
-                    element.classList.toggle('order-item--active');
-
+        orderStatusBtn.addEventListener('click', (evt) => {
+            if (orderStatusBtn.getAttribute('id') === orderId.innerHTML) {
+                orderStatus.id = orderId.innerHTML;
+                if (Number(statusInput.value)) { //Почему то все время попадает в первое условие!!!!!
+                    orderStatus.done = 0;
+                } else {
+                    orderStatus.done = 1;
                 }
+                orderStatus.changeStatus = 'change';
+                errorWrapper = order.querySelector('.error-wrapper');
+                errorMsg = order.querySelector('.error');
 
-            });
+                // Запрос на изменение статуса заказа
+                $.ajax({
+                    url: '/server/index.php',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: orderStatus,
+                    cache: false,
+                    success: function (response) {
+                        console.log('success', response);
+                        if (!response.error) {
 
-            evt.target.classList.toggle('order-item__toggle--active');
+                            if (evt.target.classList && evt.target.classList.contains('order-item__btn')) {
 
-        }
+                                const status = evt.target.previousElementSibling;
+                                //Удаляем сообщение об ошибке и скрываем блок с этим сообщением
+                                errorWrapper.hidden = true;
+                                errorMsg.textContent = null;
 
-        if (evt.target.classList && evt.target.classList.contains('order-item__btn')) {
+                                if (status.classList && status.classList.contains('order-item__info--no')) {
+                                    status.textContent = 'Выполнено';
+                                    statusInput.value = 1;
+                                } else {
+                                    status.textContent = 'Не выполнено';
+                                    statusInput.value = 0;
+                                }
 
-            const status = evt.target.previousElementSibling;
-
-            if (status.classList && status.classList.contains('order-item__info--no')) {
-                status.textContent = 'Выполнено';
-                orderStatus['done'] = 1;
-            } else {
-                status.textContent = 'Не выполнено';
-                orderStatus['done'] = 0;
+                                status.classList.toggle('order-item__info--no');
+                                status.classList.toggle('order-item__info--yes');
+                            }
+                        } else {
+                            //Показываем блок с сообщением об ошибке и помещаем в него сообщение
+                            errorWrapper.hidden = false;
+                            errorMsg.textContent = response.message;
+                        }
+                    },
+                    error: function (e) {
+                        console.log('error', e);
+                        //Показываем блок с сообщением об ошибке и помещаем в него сообщение
+                        errorWrapper.hidden = false;
+                        errorMsg.textContent = 'Ошибка при изменении статуса заказа. Попробуйте позднее';
+                    }
+                });
             }
-
-            status.classList.toggle('order-item__info--no');
-            status.classList.toggle('order-item__info--yes');
-            //Запрос на изменение статуса заказа
-            $.ajax({
-                url: '/server/index.php',
-                type: 'POST',
-                dataType: 'json',
-                data: orderStatus,
-                cache: false,
-                success: function (response) {
-                    // console.log('success', response);
-                },
-                error: function (e) {
-                    console.log('error', e);
-                }
-            });
-        }
-
+        });
     });
 
+    const pageOrderList = document.querySelector('.page-order__list');
+    if (pageOrderList) {
+
+        pageOrderList.addEventListener('click', evt => {
+
+            if (evt.target.classList && evt.target.classList.contains('order-item__toggle')) {
+                var path = evt.path || (evt.composedPath && evt.composedPath());
+                Array.from(path).forEach(element => {
+
+                    if (element.classList && element.classList.contains('page-order__item')) {
+
+                        element.classList.toggle('order-item--active');
+
+                    }
+
+                });
+
+                evt.target.classList.toggle('order-item__toggle--active');
+
+            }
+        });
+
+    }
 }
+
 
 const checkList = (list, btn) => {
 
@@ -356,7 +387,7 @@ if (pageAdd) {
             e.preventDefault();
             let formData = new FormData($('#addProductForm')[0]);
             let image = document.getElementById('productPhoto').files;
-            const hiddenInput = document.getElementById('oldPath');
+            const hiddenInput = document.getElementById('oldImg');
             formData.append('productImg', image);
             //Добавление информации о типе запроса (добаление или изменение)
             if (hiddenInput) {
@@ -373,7 +404,7 @@ if (pageAdd) {
                 data: formData,
                 cache: false,
                 success: function (response) {
-                    // console.log('success', response);
+                    console.log(response);
                     if (response.error) {
                         $('.error').text(response.message);
                     } else {
@@ -399,12 +430,21 @@ if (pageAdd) {
 
 const addList = document.querySelector('.add-list');
 if (addList) {
-
+    console.log('in add list');
     const form = document.querySelector('.custom-form');
     labelHidden(form);
 
     const addButton = addList.querySelector('.add-list__item--add');
     const addInput = addList.querySelector('#productPhoto');
+    const remover = addList.querySelector('.add-list__item--active');
+
+    if (remover) {
+        remover.addEventListener('click', evt => {
+            addList.removeChild(evt.target);
+            addInput.value = '';
+            checkList(addList, addButton);
+        });
+    }
 
     checkList(addList, addButton);
 
@@ -441,6 +481,7 @@ if (productsPage) {
     const errorSpan = document.querySelector('.error');
     let deleteProductObj = {};
     let adminProductsList = document.querySelectorAll('.page-products__item');
+    const adminInput = document.getElementById('isAdmin');
     adminProductsList.forEach((product) => {
         let productsId = product.querySelectorAll('.product-item__field');
         let productId = '';
@@ -456,7 +497,9 @@ if (productsPage) {
         deleteProductBtn.addEventListener('click', (evt) => {
             if (deleteProductBtn.getAttribute('id') === productId) {
                 deleteProductObj.id = productId;
+                deleteProductObj.imgName = product.querySelector('.imgName').value
                 deleteProductObj.deleteProduct = 'delete';
+                deleteProductObj.admin = adminInput.value;
                 console.log(deleteProductObj);
                 //Запрос на удаление товара
                 $.ajax({
@@ -466,9 +509,7 @@ if (productsPage) {
                     data: deleteProductObj,
                     cache: false,
                     success: function (response) {
-                        // console.log('success', response);
                         if (response.error) {
-
                             errorSpan.textContent = response.message;
 
                         } else {
@@ -494,18 +535,34 @@ if (productsPage) {
 let minPrice = '';
 let maxPrice = '';
 
-// jquery range maxmin
 if (document.querySelector('.shop-page')) {
 
     $('.range__line').slider({
         min: 350,
         max: 32000,
-        values: [minPrice ? minPrice : 350, maxPrice ? maxPrice : 32000],
+        values: [350, 32000],
         range: true,
+        create: function (event, ui) {
+
+            if ($('.input_min_price').val() !== '[object Object]') {
+                minPrice = $('.input_min_price').val($('.range__line').slider('values', 0, $('.input_min_price').val()));
+                maxPrice = $('.input_max_price').val($('.range__line').slider('values', 1, $('.input_max_price').val()));
+                $('.input_min_price').val($('.range__line').slider('values', 0))
+                $('.input_max_price').val($('.range__line').slider('values', 1))
+            } else {
+                console.log('minPrice if object', $('.input_min_price').val());
+                minPrice = 350;
+                maxPrice = 32000;
+                document.querySelector('.input_min_price').value = 350;
+                document.querySelector('.min-price').textContent = '350 руб'
+                document.querySelector('.input_max_price').value = 32000;
+                document.querySelector('.max-price').textContent = '32000 руб'
+            }
+        },
         stop: function (event, ui) {
 
-            $('.min-price').text((minPrice ? minPrice : $('.range__line').slider('values', 0)) + ' руб.');
-            $('.max-price').text((maxPrice ? maxPrice : $('.range__line').slider('values', 1)) + ' руб.');
+            $('.min-price').text($('.range__line').slider('values', 0) + ' руб.');
+            $('.max-price').text($('.range__line').slider('values', 1) + ' руб.');
             minPrice = $('.input_min_price').val($('.range__line').slider('values', 0));
             maxPrice = $('.input_max_price').val($('.range__line').slider('values', 1));
         },

@@ -1,13 +1,7 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
-
-//Редирект пользователя, который не является администратором на главную страницу
-if (!isset($_SESSION['admin'])) {
-    header("Location: /"); //Редирект для пользователей не подходящих под признак
-} else {
-    if (isset($_SESSION['login'])) {
-        setcookie('login', $_COOKIE['login'], time() + 43200, '/');
-    }
+if (!empty($_GET['type']) && $_GET['type'] === 'change') {
+    $imgSrc = pageHelper\getBase64CodeImg($_SERVER['DOCUMENT_ROOT'] . '/img/products/' . $_POST['oldImg']);
 }
 
 $categories = requestDBHelper\getCategories();
@@ -19,18 +13,12 @@ $categories = requestDBHelper\getCategories();
         <fieldset class="page-add__group custom-form__group">
             <legend class="page-add__small-title custom-form__title">Данные о товаре</legend>
             <label for="product-name" class="custom-form__input-wrapper page-add__first-wrapper">
-                <input type="text" class="custom-form__input" name="productName" id="product-name"
-                       value="<?= isset($_GET['name']) ? htmlspecialchars($_GET['name']) : '' ?>">
-                <p class="custom-form__input-label">
-                    Название товара
-                </p>
+                <input type="text" class="custom-form__input" name="productName" id="product-name" placeholder="Название товара"
+                       value="<?= isset($_POST['name']) ? htmlspecialchars($_POST['name']) : '' ?>">
             </label>
             <label for="product-price" class="custom-form__input-wrapper">
-                <input type="text" class="custom-form__input" name="productPrice" id="product-price"
-                       value="<?= isset($_GET['price']) ? htmlspecialchars($_GET['price']) : '' ?>">
-                <p class="custom-form__input-label">
-                    Цена товара
-                </p>
+                <input type="text" class="custom-form__input" name="productPrice" id="product-price" placeholder="Цена товара"
+                       value="<?= isset($_POST['price']) ? htmlspecialchars($_POST['price']) : '' ?>">
             </label>
         </fieldset>
         <fieldset class="page-add__group custom-form__group">
@@ -41,6 +29,11 @@ $categories = requestDBHelper\getCategories();
                            accept="image/jpeg,image/png,image/jpg">
                     <label for="productPhoto">Добавить фотографию</label>
                 </li>
+                <?php if (!empty($_GET['type']) && $_GET['type'] === 'change'): ?>
+                    <li class="add-list__item add-list__item--active">
+                        <img src="<?= $imgSrc ?>">
+                    </li>
+                <?php endif; ?>
             </ul>
         </fieldset>
         <fieldset class="page-add__group custom-form__group">
@@ -49,16 +42,20 @@ $categories = requestDBHelper\getCategories();
                 <?php include $_SERVER['DOCUMENT_ROOT'] . '/templates/selectCategories.php' ?>
             </div>
             <input type="checkbox" name="new" id="new" class="custom-form__checkbox" value="1"
-                <?php if (isset($_GET['new']) && $_GET['new'] === '1'): ?> checked<?php endif; ?>>
+                <?php if (isset($_POST['new']) && $_POST['new'] === '1'): ?> checked<?php endif; ?>>
             <label for="new" class="custom-form__checkbox-label">Новинка</label>
             <input type="checkbox" name="sale" id="sale" class="custom-form__checkbox" value="1"
-                <?php if (isset($_GET['sale']) && $_GET['sale'] === '1'): ?> checked<?php endif; ?>>
+                <?php if (isset($_POST['sale']) && $_POST['sale'] === '1'): ?> checked<?php endif; ?>>
             <label for="sale" class="custom-form__checkbox-label">Распродажа</label>
         </fieldset>
 <!--     Скрытые поля, которые передаются, если нужно изменить информацию о товаре-->
-        <?php if (!empty($_GET['oldPath']) && !empty($_GET['id'])):?>
-            <input id="oldPath" type="hidden" name="oldPath" value="<?= $_GET['oldPath'] ?>">
-            <input type="hidden" name="id" value="<?= $_GET['id'] ?>">
+        <?php if (!empty($_POST['oldImg']) && !empty($_POST['id'])):?>
+            <input id="oldImg" type="hidden" name="oldImg" value="<?= $_POST['oldImg'] ?>">
+            <input type="hidden" name="id" value="<?= $_POST['id'] ?>">
+            <input type="hidden" name="admin" value="<?= $_SESSION['admin'] ?>">
+        <?php endif; ?>
+        <?php if (!empty($_SESSION['admin']) && $_SESSION['admin']):?>
+            <input type="hidden" name="admin" value="<?= $_SESSION['admin'] ?>">
         <?php endif; ?>
         <button class="button"
                 type="submit" name="<?= (!empty($_GET['type']) && $_GET['type'] === 'change') ? 'changeProduct' : 'addProduct' ?>"

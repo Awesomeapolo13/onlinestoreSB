@@ -2,7 +2,7 @@
 include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
 
 //Перечень продуктов
-$products = pageHelper\transformProductsArr(requestDBHelper\getProducts());
+$products = pageHelper\transformProductsArr(requestDBHelper\getProducts(true));
 ?>
 <main class="page-products">
     <h1 class="h h--1">Товары</h1>
@@ -14,6 +14,9 @@ $products = pageHelper\transformProductsArr(requestDBHelper\getProducts());
         <span class="page-products__header-field">Категория</span>
         <span class="page-products__header-field">Новинка</span>
     </div>
+    <?php if (!empty($_SESSION['admin']) && $_SESSION['admin']):?>
+        <input id="isAdmin" type="hidden" name="admin" value="<?= $_SESSION['admin'] ?>">
+    <?php endif; ?>
     <ul class="page-products__list">
         <?php pageHelper\showAdminProducts($products); ?>
     </ul>

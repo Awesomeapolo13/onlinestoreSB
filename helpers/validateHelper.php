@@ -26,7 +26,7 @@ function validNewOrder($orderArray)
  */
 function checkFile($fileArr, $imgTypesArr)
 {
-    if (!in_array($fileArr['productImg']['type'], $imgTypesArr)) {
+    if (empty($fileArr['productImg']['name']) || !in_array($fileArr['productImg']['type'], $imgTypesArr)) {
         return false;
     } else {
         return true;
@@ -35,13 +35,13 @@ function checkFile($fileArr, $imgTypesArr)
 
 /**Функция валидации информации о продукте
  * @param $productInfoArr - массив данных о товаре
- * @param $productImgArr - массив с данными о изображении товара
  * @return bool - возвращает true в случае успешной валидации, в противном случае - false
  */
-function checkNewProduct($productInfoArr, $productImgArr)
+function checkNewProduct($productInfoArr)
 {
-    if (empty($productInfoArr['productName']) || empty($productInfoArr['productPrice']) || empty($productInfoArr['category'])
-        || empty($productImgArr['productImg']['name'])) {
+    if (empty($productInfoArr['productName']) ||
+        empty($productInfoArr['productPrice']) || empty($productInfoArr['category']) ||
+        !empty($productInfoArr['changeProduct']) && empty($productInfoArr['id'])) {
         return false;
     } else {
         return true;

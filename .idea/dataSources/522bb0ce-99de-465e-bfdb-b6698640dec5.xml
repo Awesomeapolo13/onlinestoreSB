@@ -981,7 +981,7 @@ product_id</ColNames>
     </column>
     <column id="285" parent="242" name="price">
       <Position>14</Position>
-      <DataType>int(11)|0s</DataType>
+      <DataType>decimal(11,2 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="286" parent="242" name="done">
@@ -1038,10 +1038,10 @@ product_id</ColNames>
     </column>
     <column id="296" parent="243" name="price">
       <Position>3</Position>
-      <DataType>int(11)|0s</DataType>
+      <DataType>decimal(11,2 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="297" parent="243" name="img_path">
+    <column id="297" parent="243" name="img_name">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>

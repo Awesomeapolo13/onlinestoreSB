@@ -143,7 +143,7 @@ function filterProducts(array $productsArr, array $filterParamArr)
     return $filteredProducts;
 }
 
-/** Функция фитрации по определенному полю
+/** Функция фильтрации по определенному полю
  * @param array $array - фильтруемый массив
  * @param string $field - ключь массива по которому нужно его отфильтровать
  * @param string $filter - значение по которому происзодит фильтрация
@@ -214,15 +214,18 @@ function showProducts(array $productsArr, int $pages, $currentPage = 1)
                 $limit += 9;
                 break;
             }
-//            var_dump($j);
         }
-//        var_dump($i);
         $productPages[$i] = $productPage; //добавляем страницу в массив страниц
     }
     //вывод контента определнной страницы
-    foreach ($productPages[$currentPage] as $product) {
-        include $_SERVER['DOCUMENT_ROOT'] . '/templates/productItem.php'; //вывод списка товаров
+    if (array_key_exists($currentPage, $productPages)) {
+        foreach ($productPages[$currentPage] as $product) {
+            include $_SERVER['DOCUMENT_ROOT'] . '/templates/productItem.php'; //вывод списка товаров
+        }
+    } else {
+        include $_SERVER['DOCUMENT_ROOT'] . '/templates/noProductsMsg.php'; //сообщение об отсутствие подходящего под фильтр товара
     }
+
 }
 
 /**Функция отображения доступных страниц с товарами
@@ -260,4 +263,16 @@ function showAdminProducts($productsArr)
     foreach ($productsArr as $product) {
         include $_SERVER['DOCUMENT_ROOT'] . '/templates/adminProduct.php';
     }
+}
+
+/**Функция получения src атрибута в формате base64
+ * @param $img - путь до файла изображения
+ * @return string - строка для src тега img
+ */
+function getBase64CodeImg($img)
+{
+    $imgSize = getimagesize($img);
+    $imgData = base64_encode(file_get_contents($img));
+    $imgSrc = "data:{$imgSize['mime']};base64,{$imgData}";
+    return $imgSrc;
 }

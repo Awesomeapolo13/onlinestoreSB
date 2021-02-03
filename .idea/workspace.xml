@@ -26,6 +26,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6c890b75-26df-4b07-9a0f-448bd05382be" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/templates/noProductsMsg.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/522bb0ce-99de-465e-bfdb-b6698640dec5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/522bb0ce-99de-465e-bfdb-b6698640dec5.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/add.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/add.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/index.php" afterDir="false" />
@@ -33,15 +35,19 @@
       <change beforePath="$PROJECT_DIR$/admin/products.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/products.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/style.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/style.min.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/helpers/pageHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/pageHelper.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/helpers/requestDBHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/requestDBHelper.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/helpers/validateHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/validateHelper.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/products/product-12.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/js/scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/scripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/route/authorization.php" beforeDir="false" afterPath="$PROJECT_DIR$/route/authorization.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/route/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/route/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/paginator.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/paginator.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/adminProduct.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/adminProduct.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/menu.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/menu.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/orderItem.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/orderItem.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/productItem.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/productItem.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/selectCategories.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/selectCategories.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +61,13 @@
     <colors>
       <entry key="522bb0ce-99de-465e-bfdb-b6698640dec5" value="Blue" />
     </colors>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -75,15 +88,18 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/admin" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/img/products" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="Errors" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Установщики программок\Open Server Panel\OpenServer\domains\onlineStore\img\products" />
+      <recent name="C:\Установщики программок\Open Server Panel\OpenServer\domains\onlineStore\templates" />
       <recent name="C:\Установщики программок\Open Server Panel\OpenServer\domains\onlineStore\admin" />
       <recent name="C:\Установщики программок\Open Server Panel\OpenServer\domains\onlineStore\admin\add" />
       <recent name="C:\Установщики программок\Open Server Panel\OpenServer\domains\onlineStore\route" />
@@ -160,7 +176,35 @@
       <workItem from="1610017406495" duration="11681000" />
       <workItem from="1610042545381" duration="8790000" />
       <workItem from="1610188997035" duration="17064000" />
-      <workItem from="1610279045894" duration="12723000" />
+      <workItem from="1610279045894" duration="19361000" />
+      <workItem from="1610383132909" duration="7354000" />
+      <workItem from="1610469200989" duration="13693000" />
+      <workItem from="1610536863060" duration="5000" />
+      <workItem from="1610554697483" duration="13043000" />
+      <workItem from="1610621124916" duration="600000" />
+      <workItem from="1610639408577" duration="9483000" />
+      <workItem from="1610728218433" duration="6803000" />
+      <workItem from="1610804204616" duration="12195000" />
+      <workItem from="1610873408689" duration="10187000" />
+      <workItem from="1610903265514" duration="7043000" />
+      <workItem from="1610972447996" duration="6304000" />
+      <workItem from="1611049368763" duration="11000" />
+      <workItem from="1611061023940" duration="13324000" />
+      <workItem from="1611160224884" duration="11426000" />
+      <workItem from="1611249079511" duration="8543000" />
+      <workItem from="1611333971329" duration="10016000" />
+      <workItem from="1611399675389" duration="11461000" />
+      <workItem from="1611506681039" duration="7417000" />
+      <workItem from="1611562817015" duration="10696000" />
+      <workItem from="1611602216363" duration="12000" />
+      <workItem from="1611653652647" duration="11494000" />
+      <workItem from="1611732620440" duration="12371000" />
+      <workItem from="1611768094883" duration="2624000" />
+      <workItem from="1611818853253" duration="13990000" />
+      <workItem from="1611927950308" duration="8257000" />
+      <workItem from="1612000998352" duration="6663000" />
+      <workItem from="1612274130452" duration="2434000" />
+      <workItem from="1612358827212" duration="411000" />
     </task>
     <servers />
   </component>

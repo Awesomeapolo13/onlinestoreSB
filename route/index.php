@@ -5,9 +5,6 @@ include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php';
 $categories = requestDBHelper\getCategories();
 $products = pageHelper\transformProductsArr(requestDBHelper\getProducts());
 
-
-//Текущая страница приложения
-$page = null;
 //Сообщения об ошибках
 $sortErrorMsg = '';
 
@@ -70,10 +67,10 @@ $page = $_GET['page'] ?? 1;
                         <div class="range__res">
                             <span class="range__res-item min-price"><?= isset($_GET['minPrice']) ? htmlspecialchars($_GET['minPrice']) : '350' ?> руб.</span>
                             <input type="hidden" class="input_min_price" name="minPrice"
-                                   value="<?= isset($_GET['minPrice']) ? htmlspecialchars($_GET['minPrice']) : '350' ?>">
+                                   value="<?= isset($_GET['minPrice']) ? htmlspecialchars($_GET['minPrice']) : 350 ?>">
                             <span class="range__res-item max-price"><?= isset($_GET['maxPrice']) ? htmlspecialchars($_GET['maxPrice']) : '32000' ?> руб.</span>
                             <input type="hidden" class="input_max_price" name="maxPrice"
-                                   value="<?= isset($_GET['maxPrice']) ? htmlspecialchars($_GET['maxPrice']) : '32000' ?>">
+                                   value="<?= isset($_GET['maxPrice']) ? htmlspecialchars($_GET['maxPrice']) : 32000 ?>">
                         </div>
                     </div>
                 </div>

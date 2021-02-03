@@ -28,10 +28,14 @@
             <span class="order-item__info"><?= $order['pay'] === 'cash' ? 'Наличными' : 'Банковской картой' ?></span>
         </div>
         <div class="order-item__group order-item__group--status">
+            <input class="statusInput" type="hidden" name="done" value="<?= $order['done'] ?>">
             <span class="order-item__title">Статус заказа</span>
             <span class="order-item__info order-item__info--<?= $order['done'] ? 'yes' : 'no' ?>"><?= $order['done'] ? 'Выполнено' : 'Не выполнено' ?></span>
             <button id="<?= $order['id'] ?>" class="order-item__btn">Изменить</button>
         </div>
+    </div>
+    <div class="order-item__wrapper error-wrapper" hidden>
+        <span class="order-item__info error"></span>
     </div>
     <div class="order-item__wrapper">
         <div class="order-item__group">

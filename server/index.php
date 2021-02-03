@@ -12,19 +12,24 @@ if (!empty($_POST)) {
         $message = 'Ваш заказ успешно оформлен, с вами свяжутся в ближайшее время';
         $requestError = false;
         $isValidOrder = validateHelper\validNewOrder($_POST);
+        $createOrder = null;
+        $orderPrice = null;
 
         if (!$isValidOrder) {
             $requestError = true;
             $message = 'Заполните все обязательные поля';
         } else {
             $_POST['productPrice'] >= $limitFreeDelivery ?
-                $_POST['orderPrice'] = $_POST['productPrice']
+                $orderPrice = $_POST['productPrice']
                 :
-                $_POST['orderPrice'] = $_POST['productPrice'] + $standardDeliveryPrice;
+                $orderPrice = $_POST['productPrice'] + $standardDeliveryPrice;
             //Запрос на добавление заказа
-            requestDBHelper\createOrder($_POST);
+            $createOrder = requestDBHelper\createOrder($_POST, $orderPrice);
         }
-
+        if (!$createOrder) {
+            $requestError = true;
+            $message = 'Ошибка при оформлении заказа. Попробуйте позднее.';
+        }
         $result = [
             'error' => $requestError,
             'message' => $message,
@@ -35,67 +40,99 @@ if (!empty($_POST)) {
     //Изменение статуса заказа
     if (isset($_POST['changeStatus'])) {
         $message = '';
-        $_POST['done'] ? $message = 'Статус заказа изменен на выполнено' : $message = 'Статус заказа изменен на не выполнено';
-        requestDBHelper\changeStatus($_POST);
-        echo json_encode($message);
+        $error = null;
+        if (!empty($_POST['admin']) || !empty($_POST['operator'])) {
+            $changeStatus = requestDBHelper\changeStatus($_POST);
+            if ($changeStatus) {
+                $error = false;
+
+            } else {
+                $error = true;
+                $message = 'Ошибка при изменении статуса заказа. Попробуйте позднее';
+            }
+        } else {
+            $error = true;
+            $message = 'У вас недостаточно прав на выполнение этой операции';
+        }
+        echo json_encode($result = [
+            'message' => $message,
+            'error' => $error,
+        ]);
     }
 
-    //Удаление товара
+    // Удаление товара
     if (isset($_POST['deleteProduct'])) {
         $message = '';
         $request = null;
         $error = false;
         //Проверка целостности информации (в случае успеха - запрос)
-        if ($_POST['deleteProduct'] === 'delete' && !empty($_POST['id'])) {
+        if ($_POST['deleteProduct'] === 'delete' && !empty($_POST['id']) && !empty($_POST['admin'])) {
             $request = requestDBHelper\deleteProduct($_POST['id']);
+
+            //Проверка успешности запроса
+            if ($request) {
+                unlink($uploadPath . $_POST['imgName']);
+                $message = 'Товар удален';
+            } else {
+                $message = 'Ошибка при удалении товара, попробуйте в другой раз';
+                $error = true;
+            }
+
         } else {
             $message = 'Ошибка при удалении товара, попробуйте в другой раз';
             $error = true;
         }
-        //Проверка успешности запроса
-        if ($request) {
-            $message = 'Товар удален';
-        } else {
-            $message = 'Ошибка при удалении товара, попробуйте в другой раз';
-            $error = true;
-        }
+
         echo json_encode($result = [
             'message' => $message,
-            'error' => $error
+            'error' => $error,
         ]);
     }
 
-    //Добавление товара
+    // Добавление / Изменение товара
     if (isset($_POST['addProduct']) || isset($_POST['changeProduct'])) {
         $message = '';
         $request = null;
-        $error = !validateHelper\checkNewProduct($_POST, $_FILES) || $error = !validateHelper\checkFile($_FILES, $imgTypesArr);
+        $_POST['imgName'] = $_FILES['productImg']['name'];
+        $error = !validateHelper\checkNewProduct($_POST);
+        // Условия проверки файла
+        if (isset($_POST['addProduct']) || isset($_POST['changeProduct']) && !empty($_FILES['productImg']['name'])) {
+            $error = !validateHelper\checkFile($_FILES, $imgTypesArr);
+        }
         if ($error) {
             $message = 'Заполните все поля и дабавьте изображение! Допустимы изображения форматов: jpg, jpeg, png';
+        } elseif (empty($_POST['admin']) || !$_POST['admin']) {
+            $error = true;
+            $message = 'Ошибка доступа к функционалу. Недостаточно прав.';
         } else {
+            $imgName = null;
             if (empty($_POST['new'])) {
                 $_POST['new'] = 0;
             }
             if (empty($_POST['sale'])) {
                 $_POST['sale'] = 0;
             }
-            //Если делается запрос на изменение, то удалить старое изображение
-            if (!empty($_POST['changeProduct'])) {
-                unlink($_POST['oldPath']); // не работает, т.к. требует абсолютный путь вплоть до диска!!
+            // Если делается запрос на изменение, то удалить старое изображение
+            if (isset($_POST['changeProduct']) && !empty($_FILES['productImg']['name'])) {
+                unlink($uploadPath . $_POST['oldImg']);
             }
-            //Загрузка изображения товара
-            move_uploaded_file($_FILES['productImg']['tmp_name'], $uploadPath . $_FILES['productImg']['name']);
-            //Поле с путем до файла
-            $_POST['imgPath'] = $uploadPath . $_FILES['productImg']['name'];
-            //Направление соответствующего запроса
-            if (!empty($_POST['changeProduct'])) {
-                $request = requestDBHelper\changeProduct($_POST);
+            // Если запрос на добавление или на изменние товара с изменением фотографии, то загрузить новое изображение
+            if (isset($_POST['addProduct']) || isset($_POST['changeProduct']) && !empty($_FILES['productImg']['name'])) {
+                move_uploaded_file($_FILES['productImg']['tmp_name'], $uploadPath . $_FILES['productImg']['name']);
+                $imgName = $_FILES['productImg']['name'];
             } else {
-                $request = requestDBHelper\addProduct($_POST);
+                $imgName = $_POST['oldImg'];
+            }
+
+            //Направление соответствующего запроса
+            if (isset($_POST['changeProduct'])) {
+                $request = requestDBHelper\changeProduct($_POST, $imgName);
+            } else {
+                $request = requestDBHelper\addProduct($_POST, $imgName);
             }
             //Действия в случае успеха или неудачи запроса
             if ($request) {
-                $message = 'Товар успешно добавлен';
+                $message = 'Товар успешно добавлен/изменен';
             } else {
                 $error = true;
                 $message = '*Ошибка при добавлении/изменении товара, попробуйте позднее';
@@ -104,6 +141,9 @@ if (!empty($_POST)) {
         echo json_encode($result = [
             'message' => $message,
             'error' => $error,
+            'data' => $_POST,
+            'validFields' => !validateHelper\checkNewProduct($_POST),
+            'validImg' => !validateHelper\checkFile($_FILES, $imgTypesArr),
         ]);
     }
 }

@@ -62,27 +62,15 @@ $menuArray = [
         'admin' => false,
     ],
     [
-        'title' => 'Войти',
-        'path' => '/authorization',
-        'sort' => 4,
-        'admin' => false,
-    ],
-    [
         'title' => 'Товары',
         'path' => '/admin/products',
-        'sort' => 5,
+        'sort' => 4,
         'admin' => true,
     ],
     [
         'title' => 'Заказы',
         'path' => '/admin/orders',
-        'sort' => 6,
-        'admin' => true,
-    ],
-    [
-        'title' => 'Выйти',
-        'path' => '/?login=out',
-        'sort' => 7,
+        'sort' => 5,
         'admin' => true,
     ],
 ];

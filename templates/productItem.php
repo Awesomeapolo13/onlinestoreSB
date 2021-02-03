@@ -1,6 +1,7 @@
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/config/index.php'; ?>
 <article class="shop__item product" tabindex="0" id="<?= $product['id'] ?>">
     <div class="product__image">
-        <img src="<?= $product['imgPath'] ?>" alt="<?= $product['name'] ?>">
+        <img src="<?= '/img/products/' . $product['imgName'] ?>" alt="<?= $product['name'] ?>">
     </div>
     <p class="product__name">
         <a href="/?productId=<?= $product['id'] ?>&productPrice=<?= $product['price'] ?>&<?= parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY) ?>"

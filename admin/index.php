@@ -13,6 +13,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/helpers/requestDBHelper.php';
 if (!empty($_SESSION['isLoggedIn'])) {
     pageHelper\isAuth($_SESSION['isLoggedIn'], '/admin/orders', '/');
     pageHelper\isAuth($_SESSION['isLoggedIn'], '/admin/products', '/');
+    pageHelper\isAuth($_SESSION['isLoggedIn'], '/admin/add', '/');
     //Редирект пользователя, который не является администратором или оператором
     if (!empty($_SESSION['operator']) || !empty($_SESSION['admin'])) {
         pageHelper\isAuth($_SESSION['operator'], '/admin/orders', '/');
@@ -22,7 +23,8 @@ if (!empty($_SESSION['isLoggedIn'])) {
     //Редирект пользователя, который не является администратором
     if (!empty($_SESSION['admin'])) {
         pageHelper\isAuth($_SESSION['admin'], '/admin/products', '/');
-    } elseif (pageHelper\isCurrentURL('/admin/products')) {
+        pageHelper\isAuth($_SESSION['admin'], '/admin/add', '/');
+    } elseif (pageHelper\isCurrentURL('/admin/products') || pageHelper\isCurrentURL('/admin/add')) {
         header("Location: /"); //Редирект для пользователей не подходящих под признак;
     }
 } else {

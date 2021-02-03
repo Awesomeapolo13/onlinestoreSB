@@ -1,0 +1,7 @@
+Пользователь			Роль
+nickstepan@mail.ru		Оператор
+eZakh@gmail.com			Оператор
+mainHanz@ya.ru			Оператор/Администратор
+interstellar@ygmail.com		Без роли
+
+Пароль у всех 123456
